@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>data/quiz_set.tsv</name>
+			<type>1</type>
+			<location>C:/Users/Rhys/eclipse-workspace/SteamPunkTrivia/data/quiz_set.tsv</location>
+		</link>
+	</linkedResources>
 </projectDescription>

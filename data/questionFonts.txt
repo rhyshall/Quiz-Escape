@@ -1,0 +1,10 @@
+! Question property values in format <char_count font_size>
+20 30 
+30 29
+40 28
+50 27
+60 26
+80 25 
+100 24 
+120 23 
+140 22
