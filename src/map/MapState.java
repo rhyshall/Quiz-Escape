@@ -9,7 +9,7 @@ public class MapState
   public static int playerXPos;
   public static int playerYPos;
 	
-  public MapState()
+  public static void construct()
   {
     initMapConfig();
   }
@@ -171,7 +171,7 @@ public class MapState
 	return false;
   }
   
-  private void initMapConfig()
+  private static void initMapConfig()
   {
 	int vertSquareCnt = Constants.VERT_SQUARE_CNT;
 	int horSquareCnt = Constants.HOR_SQUARE_CNT;
@@ -196,7 +196,7 @@ public class MapState
 	                 horSquareCnt);
   }
   
-  private void initBlockSquares(int vertSquareCnt, int horSquareCnt)
+  private static void initBlockSquares(int vertSquareCnt, int horSquareCnt)
   {
 	int blockSquare = Constants.BLOCK_SQUARE;
 	int i = 0;
@@ -211,7 +211,7 @@ public class MapState
 	}
   }
   
-  private void initPlayerSquare(int vertSquareCnt, int horSquareCnt)
+  private static void initPlayerSquare(int vertSquareCnt, int horSquareCnt)
   {
     mapConfig[horSquareCnt/2][vertSquareCnt-1] = Constants.PLAYER_SQUARE;
     
@@ -219,7 +219,7 @@ public class MapState
     playerYPos = vertSquareCnt-1;
   }
   
-  private void initQuizSquares(int vertSquareCnt, int horSquareCnt)
+  private static void initQuizSquares(int vertSquareCnt, int horSquareCnt)
   {
 	int quizSquare = Constants.QUIZ_SQUARE;
 	
@@ -228,7 +228,7 @@ public class MapState
 	mapConfig[(horSquareCnt/2)+1][vertSquareCnt-1] = quizSquare;
   }
   
-  private void initFinishSquare(int vertSquareCnt, int horSquareCnt)
+  private static void initFinishSquare(int vertSquareCnt, int horSquareCnt)
   {
 	mapConfig[horSquareCnt/2][0] = Constants.FINISH_SQUARE;
   }
