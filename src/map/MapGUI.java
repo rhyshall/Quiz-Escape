@@ -5,19 +5,21 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
+
+import common.Colours;
 import common.Constants;
 import generator.GenQuizSquare;
 import trivia.QuizGUI;
 
 public class MapGUI extends JFrame implements KeyListener
 {
-  MapState mapState;
-  QuizGUI quizGUI;
+  public MapState mapState;
+  public Trivia trivia;
+  public QuizGUI quizGUI;
   public static final int screenWidth = Constants.MAP_WIDTH;
   public static final int screenHeight = Constants.MAP_HEIGHT;
   public static final int horSquareCnt = Constants.HOR_SQUARE_CNT;
@@ -32,7 +34,10 @@ public class MapGUI extends JFrame implements KeyListener
   public MapGUI()
   {
 	super();
+	
+	Colours.assemble();
 	MapState.construct();
+	trivia = new Trivia();
   }
 	
   public void run()
@@ -101,6 +106,8 @@ public class MapGUI extends JFrame implements KeyListener
 		  GenQuizSquare targetSquare = new GenQuizSquare(quizSquares);
 		  FlashQuizSquare.targetSquare = targetSquare;
 		  
+		  MapState.setActiveQuiz(targetSquare);
+		  
 		  flashSquares();
 		}
 		
@@ -133,34 +140,18 @@ public class MapGUI extends JFrame implements KeyListener
 	    colour = getColourType(i,
 	    		               j);
 	    g.setColor(colour);
-	    
-	    if (colour.equals(Color.BLUE) || 
-	    	colour.equals(new Color(255, 
-	    			                255, 
-	    			                80)) /* light yellow */ || 
-	    	colour.equals(Color.BLACK) || 
-	    	colour.equals(Color.GREEN))
-	    {
-	      g.fillRect(xPos, 
-	    		     yPos, 
-	    		     blockWidth, 
-	    		     blockHeight);
-	    }	   
-	    
-	    else
-	    {
-	      g.fillRect(xPos, 
-	    		     yPos, 
-	    		     blockWidth, 
-	    		     blockHeight);
+
+	    g.fillRect(xPos, 
+	    		   yPos, 
+	    		   blockWidth, 
+	    		   blockHeight);
 	      
-	      g.setColor(Color.black);
+	    g.setColor(Color.black);
 	      
-	      g.drawRect(xPos, 
-	    		     yPos, 
-	    		     blockWidth, 
-	    		     blockHeight);
-	    }
+	    g.drawRect(xPos, 
+	    		   yPos, 
+	    		   blockWidth, 
+	    		   blockHeight);
 	  }
 	}
   }
@@ -213,7 +204,8 @@ public class MapGUI extends JFrame implements KeyListener
 	return yPos;
   }
   
-  private Color getColourType(int xPos, int yPos)
+  private Color getColourType(int xPos, 
+		                      int yPos)
   {
 	int squareType = 0;
 	Color colour = null;
@@ -224,41 +216,37 @@ public class MapGUI extends JFrame implements KeyListener
 	{
 	  case Constants.PLAYER_SQUARE:
 	  {
-		colour = Color.BLUE;
+		colour = Colours.BLUE_1;
 		break;
 	  }
 	   
 	  case Constants.BLOCK_SQUARE:
 	  {
-		colour = new Color(210, 
-				           210, 
-				           210); /* light grey */;
+		colour = Colours.LIGHT_GREY_1;
 		break;
 	  }
 	  
 	  case Constants.GROUND_SQUARE:
 	  {
-		colour = Color.LIGHT_GRAY;
+		colour = Colours.LIGHT_GREY_2;
 		break;
 	  }
 	  
-	  case Constants.PERM_BLOCK_SQUARE:
+	  case Constants.BLACK_HOLE_SQUARE:
 	  {
-		colour = Color.BLACK;
+		colour = Colours.DARK_GREY_1;
 		break;
 	  }
 	  
 	  case Constants.QUIZ_SQUARE:
 	  {
-		colour = new Color(255, 
-				           255, 
-				           80); /* light yellow */
+		colour =  Colours.YELLOW_1;
 		break;
 	  }
 	  
 	  case Constants.FINISH_SQUARE:
 	  {
-		colour = Color.GREEN;
+		colour = Colours.GREEN_2;
 		break;
 	  }
 	  
@@ -274,7 +262,6 @@ public class MapGUI extends JFrame implements KeyListener
   
   public void flashSquares()
   {
-	int i = 0;
 	Timer timer = new Timer(true);
 	TimerTask flashQuizSquare = new FlashQuizSquare(this,
 			                                        quizGUI);

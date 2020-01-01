@@ -1,17 +1,20 @@
 package map;
 
 import common.Constants;
-import java.util.ArrayList;
+import generator.GenQuizSquare;
+
 
 public class MapState 
 {
   public static int[][] mapConfig;
   public static int playerXPos;
   public static int playerYPos;
+  public static QuizSquare activeQuizSquare;
 	
   public static void construct()
   {
     initMapConfig();
+    activeQuizSquare = new QuizSquare();
   }
   
   public static boolean canMoveUp()
@@ -169,6 +172,12 @@ public class MapState
 	}
 	
 	return false;
+  }
+  
+  public static void setActiveQuiz(GenQuizSquare quizSquare)
+  {
+	activeQuizSquare.xPos = quizSquare.xPos;
+	activeQuizSquare.yPos = quizSquare.yPos;
   }
   
   private static void initMapConfig()

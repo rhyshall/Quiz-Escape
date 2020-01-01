@@ -64,19 +64,28 @@ class FlashQuizSquare extends TimerTask
 	  i = 0;	  
 	  cancel();
 	  
+	  quizGUI = new QuizGUI(mapGUI);
+	  quizGUI.run();
+	  
 	  try 
 	  {
-		TimeUnit.MILLISECONDS.sleep(1200);
+		TimeUnit.MILLISECONDS.sleep(Constants.QUIZ_LOAD_TIME);
 	  } 
 	  catch (InterruptedException e) 
 	  {
 		e.printStackTrace();
 	  }
 	  
+	  quizGUI.setVisible(true);
 	  mapGUI.setVisible(false);
 	  
-	  quizGUI = new QuizGUI();
-	  quizGUI.run();
+	  //restore all quiz squares in map state
+	  for (i = 0; i < quizSquareCnt; i++)
+	  {
+	    nextFlashSquare = quizSquares.entries.get(i);
+	    
+	    MapState.mapConfig[nextFlashSquare.xPos][nextFlashSquare.yPos] = Constants.QUIZ_SQUARE;
+	  }
 	  
 	  return;
 	}

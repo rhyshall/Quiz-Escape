@@ -3,16 +3,18 @@ package trivia;
 import java.util.ArrayList;
 import java.util.Collections;
 import common.Constants;
+import generator.GenQuiz;
 
 public class QuizState 
 {
-  public Quiz quiz;
+  private Quiz quiz;
+  private QuizBag quizBag;
   
-  public QuizState()
+  public QuizState(QuizBag quizBag)
   {
 	quiz = new Quiz();  
 	  
-	setContent();
+	setContent(quizBag);
 	shuffleOptions();
   }
   
@@ -21,17 +23,32 @@ public class QuizState
 	return quiz;
   }
   
-  private void setContent()
+  public QuizBag getQuizBag()
   {
-	quiz.setQuestion("Why hfhf dyh bdhd fjfjg gog tod hr rjf fjejeje fhfhdkd fhfhfhf idu sd?");
-	quiz.setAnswer("A");
+	return quizBag;
+  }
+  
+  public void setQuizBag(QuizBag quizBag)
+  {
+	this.quizBag = quizBag;
+  }
+  
+  private void setContent(QuizBag quizBag)
+  {
+	GenQuiz genQuiz = new GenQuiz(quizBag);
+	Quiz nextQuiz = new Quiz();
+	
+	nextQuiz = genQuiz.getQuiz();
+	  
+	quiz.setQuestion(nextQuiz.getQuestion());
+	quiz.setAnswer(nextQuiz.getAnswer());
 		
-	quiz.setOptionA("A");
-	quiz.setOptionB("B");
-	quiz.setOptionC("C");
-	quiz.setOptionD("D");
+	quiz.setOptionA(nextQuiz.getOptionA());
+	quiz.setOptionB(nextQuiz.getOptionB());
+	quiz.setOptionC(nextQuiz.getOptionC());
+	quiz.setOptionD(nextQuiz.getOptionD());
 		
-	quiz.setIsTrueOrFalse(false);
+	quiz.setIsTrueOrFalse(nextQuiz.getIsTrueOrFalse());
   }
   
   private void shuffleOptions()
@@ -86,6 +103,12 @@ public class QuizState
 	  quiz.setOptionB(optionList[1]);
 	  quiz.setOptionC(optionList[2]);
 	  quiz.setOptionD(optionList[3]);
+	}
+	
+	else
+	{
+	  quiz.setOptionA("True");
+	  quiz.setOptionB("False");
 	}
   }
   

@@ -17,11 +17,16 @@ public class QuizBag
 {
   private ArrayList<Quiz> quizList;
   private int size;
+  private int[] blackList;
+  private int blackListSize;
   
   public QuizBag()
   {
-	quizList = new ArrayList<Quiz>(1000);
+	quizList = new ArrayList<Quiz>(Constants.SUGG_MAX_QUEST);
 	size = 0;
+	
+	blackList = new int[Constants.SUGG_MAX_QUEST];
+	blackListSize = 0;
   }
   
   public void fillBag()
@@ -51,12 +56,13 @@ public class QuizBag
 		
 		answer = tokenizer.nextToken();
 		
-		quiz.setAnswer(answer);
 		quiz.setOptionA(answer);
 		quiz.setOptionB(tokenizer.nextToken());
 		
 		if (tokenizer.hasMoreTokens())
-		{		
+		{
+		  quiz.setAnswer(answer);
+			
 		  quiz.setOptionC(tokenizer.nextToken());
 		  quiz.setOptionD(tokenizer.nextToken());
 		  quiz.setIsTrueOrFalse(false);
@@ -67,6 +73,10 @@ public class QuizBag
 		  quiz.setOptionC(null);
 		  quiz.setOptionD(null);
 		  quiz.setIsTrueOrFalse(true);
+		  
+		  answer = answer.replaceAll("\\s+", 
+                                     "");
+		  quiz.setAnswer(answer);
 		}
 		
 		quizList.add(quiz);
@@ -80,5 +90,28 @@ public class QuizBag
 	{
 	  System.err.println("Error: " + e.getMessage());
 	} 
+  }
+  
+  public Quiz grab(int index)
+  {
+	blackList[blackListSize] = index;
+	blackListSize++;
+	  
+	return quizList.get(index);
+  }
+  
+  public int getSize()
+  {
+	return size;
+  }
+  
+  public int[] getBlackList() 
+  {
+	return blackList;  
+  }
+  
+  public int getBlackListSize()
+  {
+	return blackListSize;
   }
 }
