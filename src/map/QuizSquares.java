@@ -6,7 +6,7 @@ import common.Constants;
 
 public class QuizSquares
 {
-  public ArrayList<QuizSquare> entries;
+  public static ArrayList<QuizSquare> entries;
   
   public QuizSquares()
   {

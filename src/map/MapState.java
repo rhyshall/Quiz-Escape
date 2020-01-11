@@ -17,7 +17,7 @@ public class MapState
     activeQuizSquare = new QuizSquare();
   }
   
-  public static boolean canMoveUp()
+  public static boolean canMoveDown()
   {
 	boolean canMove = true;
 	
@@ -28,9 +28,10 @@ public class MapState
 	 
 	else 
 	{
-	  if (mapConfig[playerXPos][playerYPos+1] != Constants.GROUND_SQUARE)
+	  if ((mapConfig[playerXPos][playerYPos+1] != Constants.GROUND_SQUARE)
+	    && (mapConfig[playerXPos][playerYPos+1] != Constants.FINISH_SQUARE))
 	  {
-		canMove = false;
+		canMove = false; 
 	  }
 	}
 	
@@ -48,7 +49,8 @@ public class MapState
 	
 	else 
 	{
-	  if (mapConfig[playerXPos+1][playerYPos] != Constants.GROUND_SQUARE)
+	  if ((mapConfig[playerXPos+1][playerYPos] != Constants.GROUND_SQUARE)
+	    && (mapConfig[playerXPos+1][playerYPos] != Constants.FINISH_SQUARE))
 	  {
 		canMove = false;
 	  }
@@ -57,7 +59,7 @@ public class MapState
 	return canMove;
   }
   
-  public static boolean canMoveDown()
+  public static boolean canMoveUp()
   {
 	boolean canMove = true;
 	  
@@ -68,7 +70,8 @@ public class MapState
 		
 	else 
 	{
-	  if (mapConfig[playerXPos][playerYPos-1] != Constants.GROUND_SQUARE)
+	  if ((mapConfig[playerXPos][playerYPos-1] != Constants.GROUND_SQUARE)
+		&& (mapConfig[playerXPos][playerYPos-1] != Constants.FINISH_SQUARE))
 	  {
 	    canMove = false;
 	  }
@@ -88,7 +91,8 @@ public class MapState
 	
 	else 
 	{
-	  if (mapConfig[playerXPos-1][playerYPos] != Constants.GROUND_SQUARE)
+	  if ((mapConfig[playerXPos-1][playerYPos] != Constants.GROUND_SQUARE)
+		&& (mapConfig[playerXPos-1][playerYPos] != Constants.FINISH_SQUARE))
 	  {
 		canMove = false;
 	  }
@@ -99,34 +103,90 @@ public class MapState
   
   public static void movePlayerUp()
   {
+	int nextSquareType; 
+		
+	nextSquareType = mapConfig[playerXPos][playerYPos-1];	
+	removeQuizSquares();
+	  
 	mapConfig[playerXPos][playerYPos] = Constants.GROUND_SQUARE;
-	mapConfig[playerXPos][playerYPos+1] = Constants.PLAYER_SQUARE;
+	mapConfig[playerXPos][playerYPos-1] = Constants.PLAYER_SQUARE;	
+	playerYPos = playerYPos - 1;
 	
-	playerYPos = playerYPos + 1;
+	if (nextSquareType == Constants.FINISH_SQUARE)
+	{
+	  MapGUI.victory = true;
+	}
+	
+	else
+	{
+	  syncQuizSquares();
+	}
   }
   
   public static void movePlayerRight()
   {
-	mapConfig[playerXPos][playerYPos] = Constants.GROUND_SQUARE;
-	mapConfig[playerXPos+1][playerYPos] = Constants.PLAYER_SQUARE;
+	int nextSquareType; 
 	
+	nextSquareType = mapConfig[playerXPos+1][playerYPos];	
+	removeQuizSquares();
+	
+	mapConfig[playerXPos][playerYPos] = Constants.GROUND_SQUARE;
+	mapConfig[playerXPos+1][playerYPos] = Constants.PLAYER_SQUARE;			
 	playerXPos = playerXPos + 1;
+	
+	if (nextSquareType == Constants.FINISH_SQUARE)
+	{
+	  MapGUI.victory = true;
+	}
+	
+	else
+	{
+	  syncQuizSquares();
+	}
   }
   
   public static void movePlayerDown()
-  {
-	mapConfig[playerXPos][playerYPos] = Constants.GROUND_SQUARE;
-	mapConfig[playerXPos][playerYPos-1] = Constants.PLAYER_SQUARE;
+  { 
+	int nextSquareType; 
 	
-	playerYPos = playerYPos - 1;
+	nextSquareType = mapConfig[playerXPos][playerYPos+1];	  
+	removeQuizSquares();
+	
+	mapConfig[playerXPos][playerYPos] = Constants.GROUND_SQUARE;
+	mapConfig[playerXPos][playerYPos+1] = Constants.PLAYER_SQUARE;	
+	playerYPos = playerYPos + 1;
+	
+	if (nextSquareType == Constants.FINISH_SQUARE)
+	{
+	  MapGUI.victory = true;
+	}
+	
+	else
+	{
+	  syncQuizSquares();
+	}
   }
   
   public static void movePlayerLeft()
   {
+	int nextSquareType; 
+		
+	nextSquareType = mapConfig[playerXPos-1][playerYPos];
+	removeQuizSquares();
+	  
 	mapConfig[playerXPos][playerYPos] = Constants.GROUND_SQUARE;
-	mapConfig[playerXPos-1][playerYPos] = Constants.PLAYER_SQUARE;
-	
+	mapConfig[playerXPos-1][playerYPos] = Constants.PLAYER_SQUARE;	
 	playerXPos = playerXPos - 1;
+	
+	if (nextSquareType == Constants.FINISH_SQUARE)
+	{
+	  MapGUI.victory = true;
+	}
+	
+	else
+	{
+	  syncQuizSquares();
+	}
   }
   
   public static boolean isBesideQueston()
@@ -220,15 +280,17 @@ public class MapState
 	}
   }
   
-  private static void initPlayerSquare(int vertSquareCnt, int horSquareCnt)
+  private static void initPlayerSquare(int vertSquareCnt, 
+		                               int horSquareCnt)
   {
     mapConfig[horSquareCnt/2][vertSquareCnt-1] = Constants.PLAYER_SQUARE;
     
-    playerXPos = horSquareCnt / 2;
+    playerXPos = horSquareCnt / 2; 
     playerYPos = vertSquareCnt-1;
   }
   
-  private static void initQuizSquares(int vertSquareCnt, int horSquareCnt)
+  private static void initQuizSquares(int vertSquareCnt, 
+		                              int horSquareCnt)
   {
 	int quizSquare = Constants.QUIZ_SQUARE;
 	
@@ -237,8 +299,79 @@ public class MapState
 	mapConfig[(horSquareCnt/2)+1][vertSquareCnt-1] = quizSquare;
   }
   
-  private static void initFinishSquare(int vertSquareCnt, int horSquareCnt)
+  private static void initFinishSquare(int vertSquareCnt, 
+		                               int horSquareCnt)
   {
 	mapConfig[horSquareCnt/2][0] = Constants.FINISH_SQUARE;
+  }
+  
+  private static void removeQuizSquares()
+  {
+	if (playerYPos < (Constants.VERT_SQUARE_CNT-1))
+	{
+      if (mapConfig[playerXPos][playerYPos+1] == Constants.QUIZ_SQUARE)
+	  {
+	    mapConfig[playerXPos][playerYPos+1] = Constants.BLOCK_SQUARE;
+	  }
+	}
+	
+	if (playerYPos > 0)
+	{
+	  if (mapConfig[playerXPos][playerYPos-1] == Constants.QUIZ_SQUARE)
+	  {
+	    mapConfig[playerXPos][playerYPos-1] = Constants.BLOCK_SQUARE;
+	  }
+	}
+	
+	if (playerXPos > 0)
+	{
+	  if (mapConfig[playerXPos-1][playerYPos] == Constants.QUIZ_SQUARE)
+	  {
+	    mapConfig[playerXPos-1][playerYPos] = Constants.BLOCK_SQUARE;
+	  }
+    }
+  
+	if (playerXPos < (Constants.HOR_SQUARE_CNT-1))
+	{
+	  if (mapConfig[playerXPos+1][playerYPos] == Constants.QUIZ_SQUARE)
+	  {
+	    mapConfig[playerXPos+1][playerYPos] = Constants.BLOCK_SQUARE;
+	  }
+    }
+  }
+  
+  private static void syncQuizSquares()
+  {
+	if (playerYPos < (Constants.VERT_SQUARE_CNT-1))
+	{
+      if (mapConfig[playerXPos][playerYPos+1] == Constants.BLOCK_SQUARE)
+	  {
+	    mapConfig[playerXPos][playerYPos+1] = Constants.QUIZ_SQUARE;
+	  }
+    }
+	    
+	if (playerYPos > 0)
+	{
+	  if (mapConfig[playerXPos][playerYPos-1] == Constants.BLOCK_SQUARE)
+	  {
+	    mapConfig[playerXPos][playerYPos-1] = Constants.QUIZ_SQUARE;
+      }
+	}
+	 
+	if (playerXPos > 0)
+	{
+	  if (mapConfig[playerXPos-1][playerYPos] == Constants.BLOCK_SQUARE)
+	  {
+	    mapConfig[playerXPos-1][playerYPos] = Constants.QUIZ_SQUARE;
+	  }
+	}
+	      
+	if (playerXPos < (Constants.HOR_SQUARE_CNT-1))
+	{
+	  if (mapConfig[playerXPos+1][playerYPos] == Constants.BLOCK_SQUARE)
+	  {
+	    mapConfig[playerXPos+1][playerYPos] = Constants.QUIZ_SQUARE;
+	  }
+	}
   }
 }

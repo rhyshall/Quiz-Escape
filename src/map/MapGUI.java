@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 
 import common.Colours;
 import common.Constants;
+import generator.GenColour;
+import generator.GenFlashCnt;
 import generator.GenQuizSquare;
 import trivia.QuizGUI;
 
@@ -30,14 +32,16 @@ public class MapGUI extends JFrame implements KeyListener
   public int rightBorderSize;
   public int blockWidth;
   public int blockHeight;
+  public static boolean victory;
 	
   public MapGUI()
   {
 	super();
 	
 	Colours.assemble();
-	MapState.construct();
-	trivia = new Trivia();
+	MapState.construct(); 	
+	trivia = new Trivia(); 
+	victory = false;
   }
 	
   public void run()
@@ -57,7 +61,7 @@ public class MapGUI extends JFrame implements KeyListener
   
   @Override
   public void keyPressed(KeyEvent e)
-  {
+  { 
 	switch(e.getKeyCode())
 	{
 	  case KeyEvent.VK_UP:
@@ -66,7 +70,14 @@ public class MapGUI extends JFrame implements KeyListener
 		{
 		  MapState.movePlayerUp();
 		  repaint();
+		  victory = true;
+		  if (victory == true)
+		  {
+			victory();
+		  }
 		}
+		
+		break;
 	  }
 	  
 	  case KeyEvent.VK_RIGHT:
@@ -75,15 +86,29 @@ public class MapGUI extends JFrame implements KeyListener
 		{
 		  MapState.movePlayerRight();
 		  repaint();
+		  
+		  if (victory == true)
+		  {
+			victory();
+		  }
 	    }
+		
+		break;
 	  }
 		 
 	  case KeyEvent.VK_DOWN:
 	  {
-		if (MapState.canMoveUp() == true)
+		if (MapState.canMoveDown() == true)
 	    { 
 	      MapState.movePlayerDown();
 	      repaint();
+	      
+	      if (victory == true)
+		  {
+			victory();
+		  }
+	      
+	      break;
 		}
 	  }
 	  
@@ -93,7 +118,14 @@ public class MapGUI extends JFrame implements KeyListener
 		{
 		  MapState.movePlayerLeft();
 		  repaint();
+		  
+		  if (victory == true)
+		  {
+			victory();
+		  }
 		}
+		
+		break;
 	  }
 	 
 	  case KeyEvent.VK_ENTER:
@@ -112,6 +144,8 @@ public class MapGUI extends JFrame implements KeyListener
 		}
 		
 		repaint();
+		
+		break;
 	  }
 	}
   }
@@ -208,52 +242,72 @@ public class MapGUI extends JFrame implements KeyListener
 		                      int yPos)
   {
 	int squareType = 0;
+	int winText = Constants.WIN_MSG_FOREGROUND;
 	Color colour = null;
 	
-	squareType = MapState.mapConfig[xPos][yPos];
-	
-	switch(squareType)
+	if (victory == true)
 	{
-	  case Constants.PLAYER_SQUARE:
+	  squareType = WinState.winConfig[xPos][yPos];
+	  
+	  if (squareType == winText)
 	  {
-		colour = Colours.BLUE_1;
-		break;
+		GenColour genColour = new GenColour();
+		colour = genColour.colour; 
 	  }
+	  
+	  else
+	  {
+		colour = Colours.BLACK_1;
+	  }
+	}
+	
+	else
+	{
+	  squareType = MapState.mapConfig[xPos][yPos];
+	
+	  switch(squareType)
+	  {
+	    case Constants.PLAYER_SQUARE:
+	    {
+		  colour = Colours.BLUE_1;
+		  break;
+	    }
 	   
-	  case Constants.BLOCK_SQUARE:
-	  {
-		colour = Colours.LIGHT_GREY_1;
-		break;
-	  }
+	    case Constants.BLOCK_SQUARE:
+	    {
+		  colour = Colours.LIGHT_GREY_1;
+		  break;
+	    }
 	  
-	  case Constants.GROUND_SQUARE:
-	  {
-		colour = Colours.LIGHT_GREY_2;
-		break;
-	  }
+	    case Constants.GROUND_SQUARE:
+	    {
+		  colour = Colours.LIGHT_GREY_2;
+		  break;
+	    }
 	  
-	  case Constants.BLACK_HOLE_SQUARE:
-	  {
-		colour = Colours.DARK_GREY_1;
-		break;
-	  }
+	    case Constants.BLACK_HOLE_SQUARE:
+	    {
+		  colour = Colours.DARK_GREY_1;
+		  break;
+	    }
 	  
-	  case Constants.QUIZ_SQUARE:
-	  {
-		colour =  Colours.YELLOW_1;
-		break;
-	  }
+	    case Constants.QUIZ_SQUARE:
+	    {
+		  colour =  Colours.YELLOW_1;
+		  break;
+	    }
 	  
-	  case Constants.FINISH_SQUARE:
-	  {
-		colour = Colours.GREEN_2;
-		break;
-	  }
+	    case Constants.FINISH_SQUARE:
+	    {
+		  colour = Colours.GREEN_2;
+		  break;
+	    }
 	  
-	  default:
-	  {
-		colour = Color.WHITE;
-		break;
+	    default:
+	    {
+		  colour = Color.WHITE;
+		  break;
+	    }
 	  }
 	}
 	
@@ -262,14 +316,22 @@ public class MapGUI extends JFrame implements KeyListener
   
   public void flashSquares()
   {
+	GenFlashCnt genFlashCnt;
 	Timer timer = new Timer(true);
 	TimerTask flashQuizSquare = new FlashQuizSquare(this,
 			                                        quizGUI);
+	genFlashCnt = new GenFlashCnt(); 
 
 	timer.scheduleAtFixedRate(flashQuizSquare,
 			                  0,
 			                  Constants.FLASH_DELAY);	
   }
   
-  
+  public void victory()
+  {
+	WinState winState = new WinState();
+	
+	winState.buildWinMsg();
+	repaint();
+  }
 }

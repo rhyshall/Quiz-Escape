@@ -82,12 +82,12 @@ public class QuizBag
 		quizList.add(quiz);
 		size++;
 	  }
-
+   
 	  dataStream.close();
     }
 	  
 	catch (Exception e)
-	{
+	{ 
 	  System.err.println("Error: " + e.getMessage());
 	} 
   }

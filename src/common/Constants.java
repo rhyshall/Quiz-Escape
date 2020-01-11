@@ -28,9 +28,9 @@ public class Constants
   public static final int FINISH_SQUARE = 6; /* finish line */
   
   //wait-time parameters
-  public static final int FLASH_DELAY = 150; /* flash duration (in milliseconds) of each square when choosing next quiz square */
-  public static final int QUIZ_LOAD_TIME = 1250; /* time-to-wait (in milliseconds) before quiz screen pops up */
-  public static final int MAIN_LOAD_TIME = 1700; /* time-to-wait (in milliseconds) to transition from quiz screen to main screen */
+  public static final int FLASH_DELAY = 125; /* flash duration (in milliseconds) of each square when choosing next quiz square */
+  public static final int QUIZ_LOAD_TIME = 1200; /* time-to-wait (in milliseconds) before quiz screen pops up */
+  public static final int MAIN_LOAD_TIME = 1600; /* time-to-wait (in milliseconds) to transition from quiz screen to main screen */
   
   //number of answer choices for each question
   public static final int ANSWER_CHOICES_CNT = 4; 
@@ -39,4 +39,16 @@ public class Constants
   public static final String TRIVIA_FILE_PATH = "\\data\\quiz_set.tsv"; /* path to trivia question file from project directory */
   public static final String TRIVIA_FILE_DELIMITER = "\t"; /* delimiter of trivia question file */
   public static final int SUGG_MAX_QUEST = 2000; /* estimated value for number of questions in trivia file */
+  
+  //win configuration file parameters
+  public static final String WIN_FILE_PATH = "\\data\\winConfig.txt"; /* path to win message text file from project directory */
+  public static final String WIN_FILE_DELIMITER = " "; /* delimiter of win message text file */
+  public static final int WIN_MSG_BACKGROUND = 0; /* represents background square of win message */
+  public static final int WIN_MSG_FOREGROUND = 1; /* represents text square of win message */
+  
+  //font configuration file parameters
+  public static final String QUEST_FONT_FILE_PATH = "\\data\\questionFonts.txt"; /* path to question font configuration from project directory */
+  public static final String ANSWER_FONT_FILE_PATH = "\\data\\answerFonts.txt"; /* path to answer font configuration from project directory */
+  public static final String FONT_SIZE_DELIMITER = "|"; /* separates question size range from font size */
+  public static final String TEXT_SIZE_DELIMITER = " "; /* separates text size lower bound from text size upper bound */
 }

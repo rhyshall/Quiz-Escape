@@ -1,23 +1,15 @@
 package trivia;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
+
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -29,6 +21,7 @@ import javax.swing.text.StyledDocument;
 
 import common.Colours;
 import common.Constants;
+import common.Fonts;
 import map.MapGUI;
 import map.MapState;
 
@@ -95,38 +88,34 @@ public class QuizGUI extends JFrame implements ActionListener
   {
     JTextPane questionArea; 
 	Border textAreaBorder;
-	Font questionFont;
+	Font questionFont = null;
+	int questionLength = 0;
 			
 	getContentPane().setLayout(new BoxLayout(getContentPane(), 
 				                             BoxLayout.Y_AXIS));
 		
 	questionArea = new JTextPane();
-	questionArea.setBackground(new Color(255,
-				                         243,
-				                         111));
+	questionArea.setBackground(Colours.YELLOW_2);
 	questionArea.setPreferredSize(new Dimension(Constants.QUESTION_WIDTH, 
 				                                Constants.QUESTION_HEIGHT));
-	textAreaBorder = BorderFactory.createLineBorder(new Color(94,
-				                                              93,
-				                                              70));
+	textAreaBorder = BorderFactory.createLineBorder(Colours.DARK_GREY_3);
 	questionArea.setEditable(false);	
 		
-	questionFont = new Font("Serif", 
-				            Font.PLAIN, 
-				            25);
-	questionArea.setFont(questionFont);
 	questionArea.setBorder(new CompoundBorder(textAreaBorder,
 				                              BorderFactory.createEmptyBorder(20, 
 																		      20, 
 																		      20, 
 																		      20)));	
 	questionArea.setText('\n' + quizState.getQuiz().getQuestion());  
+	questionLength = questionArea.getText().length();
+	
+	questionFont = Fonts.getTextSize(questionLength,
+			                         'Q'); /* question text type */
+	questionArea.setFont(questionFont);
 	alignText(questionArea);
-		
+	
 	JPanel questionPanel = new JPanel();
-	questionPanel.setBackground(new Color(255,
-			                              255,
-			                              255));
+	questionPanel.setBackground(Colours.WHITE_1);
 	questionPanel.add(questionArea);
 	questionPanel.setBorder(BorderFactory.createEmptyBorder(20, 
 				                		                    20, 
@@ -143,16 +132,12 @@ public class QuizGUI extends JFrame implements ActionListener
 	line = new JTextField();
 	line.setPreferredSize(new Dimension(Constants.MAP_WIDTH,
 			                            1));
-	line.setBackground(new Color(100,
-			                     100,
-			                     100));
+	line.setBackground(Colours.DARK_GREY_2);
 	
 	linePanel = new JPanel();
 	linePanel.setPreferredSize(new Dimension(Constants.MAP_WIDTH, 
                                              0));
-	linePanel.setBackground(new Color(255,
-			                          255,
-			                          255));
+	linePanel.setBackground(Colours.WHITE_1);
 	linePanel.add(line);
 	getContentPane().add(linePanel);
   }
@@ -161,6 +146,14 @@ public class QuizGUI extends JFrame implements ActionListener
   {
 	int optionHeight = Constants.OPTION_HEIGHT;
 	int optionWidth = Constants.OPTION_WIDTH;
+	int optionALength = 0;
+	int optionBLength = 0;
+	int optionCLength = 0;
+	int optionDLength = 0;
+	Font optionAFont;
+	Font optionBFont;
+	Font optionCFont;
+	Font optionDFont;
 	JPanel buttonPanelA;
 	JPanel buttonPanelB;
 	JPanel buttonPanelC;
@@ -179,19 +172,20 @@ public class QuizGUI extends JFrame implements ActionListener
     optionB.setPreferredSize(new Dimension(optionWidth, 
                                            optionHeight));
     
-    optionA.setBackground(new Color(20,
-                                    138,
-                                    255));
-    optionB.setBackground(new Color(20,
-                                    138,
-                                    255));
+    optionA.setBackground(Colours.BLUE_2);
+    optionB.setBackground(Colours.BLUE_2);   
+	optionA.setForeground(Colours.WHITE_1);
+    optionB.setForeground(Colours.WHITE_1);
     
-	optionA.setForeground(new Color(255,
-                                    255,
-                                    255));
-    optionB.setForeground(new Color(255,
-			                        255,
-			                        255));
+    optionALength = optionA.getText().length();
+    optionAFont = Fonts.getTextSize(optionALength, 
+    		                        'A') ;
+    optionBLength = optionB.getText().length();
+    optionBFont = Fonts.getTextSize(optionBLength, 
+    		                        'A') ;
+    
+    optionA.setFont(optionAFont);
+    optionB.setFont(optionBFont);
     
 	optionA.addActionListener(this);
 	optionB.addActionListener(this);
@@ -223,19 +217,20 @@ public class QuizGUI extends JFrame implements ActionListener
       optionD.setPreferredSize(new Dimension(optionWidth, 
                                              optionHeight));
       
-      optionC.setBackground(new Color(20,
-	                                  138,
-	                                  255));
-      optionD.setBackground(new Color(20,
-	                                  138,
-	                                  255));
+      optionC.setBackground(Colours.BLUE_2);
+      optionD.setBackground(Colours.BLUE_2);     
+  	  optionC.setForeground(Colours.WHITE_1);
+      optionD.setForeground(Colours.WHITE_1);
       
-  	  optionC.setForeground(new Color(255,
-			                          255,
-			                          255));
-      optionD.setForeground(new Color(255,
-			                          255,
-			                          255));
+      optionCLength = optionC.getText().length();
+      optionCFont = Fonts.getTextSize(optionCLength, 
+      		                          'A') ;
+      optionDLength = optionD.getText().length();
+      optionDFont = Fonts.getTextSize(optionDLength, 
+      		                          'A') ;
+      
+      optionC.setFont(optionCFont);
+      optionD.setFont(optionDFont);
       
       optionC.addActionListener(this);
   	  optionD.addActionListener(this);
@@ -256,6 +251,37 @@ public class QuizGUI extends JFrame implements ActionListener
       
       getContentPane().add(buttonPanelC);
   	  getContentPane().add(buttonPanelD);
+	}
+	
+	else
+	{
+	  JButton dummyButton = new JButton("");
+	  JButton dummyButtonTwo = new JButton("");
+	  
+	  dummyButton.setPreferredSize(new Dimension(optionWidth, 
+                                                 optionHeight));
+      dummyButtonTwo.setPreferredSize(new Dimension(optionWidth, 
+                                                    optionHeight));
+      
+      dummyButton.setBackground(Colours.YELLOW_1);
+      dummyButtonTwo.setBackground(Colours.YELLOW_1);
+  	  
+  	  buttonPanelC = new JPanel();
+  	  buttonPanelD = new JPanel();   	  
+  	  buttonPanelC.add(dummyButton);
+  	  buttonPanelD.add(dummyButtonTwo);
+  	  
+  	  buttonPanelC.setBorder(BorderFactory.createEmptyBorder(15, 
+                                                             0, 
+                                                             0, 
+                                                             0));
+      buttonPanelD.setBorder(BorderFactory.createEmptyBorder(15, 
+                                                             0, 
+                                                             30, 
+                                                             0));
+  	  
+      getContentPane().add(buttonPanelC);
+      getContentPane().add(buttonPanelD);
 	}
   }
   

@@ -4,6 +4,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import common.Constants;
+import generator.GenFlashCnt;
 import generator.GenQuizSquare;
 import trivia.QuizGUI;
 
@@ -25,14 +26,16 @@ class FlashQuizSquare extends TimerTask
   @Override
   public void run() 
   {
-	int quizSquareCnt = quizSquares.entries.size();
-    int flashCnt = quizSquareCnt * 4;
+	int quizSquareCnt = QuizSquares.entries.size();
+    int flashCnt;
     int nextFlashIndex;
     int prevFlashIndex;
     QuizSquare nextFlashSquare;
     QuizSquare prevFlashSquare;
-	  
-	if (i <= flashCnt)
+	
+	flashCnt = GenFlashCnt.flashCnt;
+	
+	if ((i <= flashCnt) && (quizSquareCnt > 1))
 	{  		
 	  if (i > 0)
 	  {
