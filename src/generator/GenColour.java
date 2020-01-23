@@ -16,8 +16,8 @@ public class GenColour
 	Random randGen = new Random();	
 	
 	redAmt = randGen.nextInt(upperBound) + 35;
-	greenAmt = randGen.nextInt(upperBound) + 95;
-	blueAmt = randGen.nextInt(upperBound) + 95;
+	greenAmt = randGen.nextInt(upperBound) + 99;
+	blueAmt = randGen.nextInt(upperBound) + 99;
 	
 	colour = new Color(redAmt,
 			           greenAmt,

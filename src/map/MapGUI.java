@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import common.Colours;
 import common.Constants;
 import generator.GenColour;
+import generator.GenCoordinate;
 import generator.GenFlashCnt;
 import generator.GenQuizSquare;
 import trivia.QuizGUI;
@@ -62,90 +63,94 @@ public class MapGUI extends JFrame implements KeyListener
   @Override
   public void keyPressed(KeyEvent e)
   { 
-	switch(e.getKeyCode())
+	if (victory == false)
 	{
-	  case KeyEvent.VK_UP:
+	  switch(e.getKeyCode())
 	  {
-		if (MapState.canMoveUp() == true)
-		{
-		  MapState.movePlayerUp();
-		  repaint();
-		  victory = true;
-		  if (victory == true)
+	    case KeyEvent.VK_UP:
+	    {
+		  if (MapState.canMoveUp() == true)
 		  {
-			victory();
+		    MapState.movePlayerUp();
+		    repaint();
+		    victory = true;
+		    if (victory == true)
+		    {
+			  victory();
+		    }
 		  }
-		}
 		
-		break;
-	  }
+		  break;
+	    }
 	  
-	  case KeyEvent.VK_RIGHT:
-	  {
-		if (MapState.canMoveRight() == true)
-		{
-		  MapState.movePlayerRight();
-		  repaint();
-		  
-		  if (victory == true)
+	    case KeyEvent.VK_RIGHT:
+	    {
+		  if (MapState.canMoveRight() == true)
 		  {
-			victory();
+		    MapState.movePlayerRight();
+		    repaint();
+		  
+		    if (victory == true)
+		    {
+			  victory();
+		    }
+	      }
+		
+		  break;
+	    }
+		 
+	    case KeyEvent.VK_DOWN:
+	    {
+		  if (MapState.canMoveDown() == true)
+	      { 
+	        MapState.movePlayerDown();
+	        repaint();
+	      
+	        if (victory == true)
+		    {
+			  victory();
+		    }
+	      
+	        break;
 		  }
 	    }
-		
-		break;
-	  }
-		 
-	  case KeyEvent.VK_DOWN:
-	  {
-		if (MapState.canMoveDown() == true)
-	    { 
-	      MapState.movePlayerDown();
-	      repaint();
-	      
-	      if (victory == true)
-		  {
-			victory();
-		  }
-	      
-	      break;
-		}
-	  }
 	  
-	  case KeyEvent.VK_LEFT:
-	  {
-		if (MapState.canMoveLeft() == true)
-		{
-		  MapState.movePlayerLeft();
-		  repaint();
-		  
-		  if (victory == true)
+	    case KeyEvent.VK_LEFT:
+	    {
+		  if (MapState.canMoveLeft() == true)
 		  {
-			victory();
+		    MapState.movePlayerLeft();
+		    repaint();
+		  
+		    if (victory == true)
+		    {
+			  victory();
+		    }
 		  }
-		}
 		
-		break;
-	  }
+		  break;
+	    }
 	 
-	  case KeyEvent.VK_ENTER:
-	  { 
-		if (MapState.isBesideQueston() == true)
-		{
-	      QuizSquares quizSquares = new QuizSquares();
-	      FlashQuizSquare.quizSquares = quizSquares;
+	    case KeyEvent.VK_ENTER:
+	    { 
+		  if (MapState.isBesideQuestion(MapState.playerXPos,
+				                        MapState.playerYPos) == true)
+		  {
+	        QuizSquares quizSquares = new QuizSquares();
+	        FlashQuizSquare.quizSquares = quizSquares;
 	      
-		  GenQuizSquare targetSquare = new GenQuizSquare(quizSquares);
-		  FlashQuizSquare.targetSquare = targetSquare;
+		    GenQuizSquare targetSquare = new GenQuizSquare(quizSquares);
+		    FlashQuizSquare.targetSquare = targetSquare;
 		  
-		  MapState.setActiveQuiz(targetSquare);
+		    MapState.setActiveQuiz(targetSquare);
 		  
-		  flashSquares();
-		}
+		    flashSquares();
+		  }
 		
-		repaint();
+		  repaint();
 		
-		break;
+		  break;
+	    }
 	  }
 	}
   }
@@ -162,30 +167,76 @@ public class MapGUI extends JFrame implements KeyListener
 	int xPos = 0;
 	int yPos = 0;
 	Color colour = null;
+	GenCoordinate genCoord;
 	
-    for(i = 0; i < horSquareCnt; i++)
-	{
-      xPos = calcNextXPos(i);
-    	
-	  for(j = 0; j < vertSquareCnt; j++)
+	if (victory == true)
+	{ 
+	  //display win screen
+	  if (GenCoordinate.isBuilt() == false)
 	  {
-		yPos = calcNextYPos(j);
-	    
-	    colour = getColourType(i,
-	    		               j);
-	    g.setColor(colour);
+		GenCoordinate.construct();
+	  }
 
-	    g.fillRect(xPos, 
-	    		   yPos, 
-	    		   blockWidth, 
-	    		   blockHeight);
+	  genCoord = new GenCoordinate();
+	  i = genCoord.xPos;
+	  j = genCoord.yPos;
+	
+	  if ((i == -1)
+	    || (j == -1))
+	  {
+		FlashWin.stop();
+	  }
+	  
+	  else
+	  {
+	    xPos = calcNextXPos(i);
+	    yPos = calcNextYPos(j);
+		
+	    colour = getColourType(i,
+                               j);
+        g.setColor(colour);
+
+        g.fillRect(xPos, 
+                   yPos, 
+                   blockWidth, 
+                   blockHeight);
+
+        g.setColor(Color.black);
+
+        g.drawRect(xPos, 
+                   yPos, 
+                   blockWidth, 
+                   blockHeight);
+	  }
+	}
+	
+	else
+	{
+	  //display game map
+      for(i = 0; i < horSquareCnt; i++)
+	  {
+        xPos = calcNextXPos(i);
+    	
+	    for(j = 0; j < vertSquareCnt; j++)
+	    {
+		  yPos = calcNextYPos(j);
+	    
+	      colour = getColourType(i,
+	    		                 j);
+	      g.setColor(colour);
+
+	      g.fillRect(xPos, 
+	    		     yPos, 
+	    		     blockWidth, 
+	    		     blockHeight);
 	      
-	    g.setColor(Color.black);
+	      g.setColor(Color.black);
 	      
-	    g.drawRect(xPos, 
-	    		   yPos, 
-	    		   blockWidth, 
-	    		   blockHeight);
+	      g.drawRect(xPos, 
+	    		     yPos, 
+	    		     blockWidth, 
+	    		     blockHeight);
+	    }
 	  }
 	}
   }
@@ -330,8 +381,13 @@ public class MapGUI extends JFrame implements KeyListener
   public void victory()
   {
 	WinState winState = new WinState();
+	Timer timer = new Timer(true);
+	TimerTask flashWin = new FlashWin(this);
 	
 	winState.buildWinMsg();
-	repaint();
+	
+	timer.scheduleAtFixedRate(flashWin,
+                              0,
+                              Constants.WIN_FLASH_DELAY);	
   }
 }

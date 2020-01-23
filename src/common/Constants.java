@@ -29,7 +29,7 @@ public class Constants
   
   //wait-time parameters
   public static final int FLASH_DELAY = 125; /* flash duration (in milliseconds) of each square when choosing next quiz square */
-  public static final int QUIZ_LOAD_TIME = 1200; /* time-to-wait (in milliseconds) before quiz screen pops up */
+  public static final int QUIZ_LOAD_TIME = 1150; /* time-to-wait (in milliseconds) before quiz screen pops up */
   public static final int MAIN_LOAD_TIME = 1600; /* time-to-wait (in milliseconds) to transition from quiz screen to main screen */
   
   //number of answer choices for each question
@@ -45,6 +45,7 @@ public class Constants
   public static final String WIN_FILE_DELIMITER = " "; /* delimiter of win message text file */
   public static final int WIN_MSG_BACKGROUND = 0; /* represents background square of win message */
   public static final int WIN_MSG_FOREGROUND = 1; /* represents text square of win message */
+  public static final int WIN_FLASH_DELAY = 100; /* flash duration (in milliseconds) of each square when constructing win message */
   
   //font configuration file parameters
   public static final String QUEST_FONT_FILE_PATH = "\\data\\questionFonts.txt"; /* path to question font configuration from project directory */

@@ -17,6 +17,54 @@ public class MapState
     activeQuizSquare = new QuizSquare();
   }
   
+  public static boolean hasLost()
+  {
+	int i;
+	int j;
+	int xCount;
+	int yCount;
+	boolean hasLost = true;
+	int blockSquare;
+	int quizSquare;
+	
+	xCount = Constants.HOR_SQUARE_CNT;
+	yCount = Constants.VERT_SQUARE_CNT;
+	
+	blockSquare = Constants.BLOCK_SQUARE;
+	quizSquare = Constants.QUIZ_SQUARE;
+	
+	for (i = 0; i < xCount; i++)
+	{
+	  for (j = 0; j < yCount; j++)
+	  {
+		if (mapConfig[i][j] == blockSquare)
+		{
+		  if (isBesideGround(i,
+			                 j) == true)
+	      {
+            hasLost = false;
+            break;
+	      }
+		}
+		
+		else
+		{
+		  if (mapConfig[i][j] == quizSquare)
+		  {
+		    if (isBesidePlayer(i,
+					           j) == true)
+			{
+		      hasLost = false;
+		      break;
+			}
+	      }
+		}
+	  }
+	}
+	
+	return hasLost;
+  }
+  
   public static boolean canMoveDown()
   {
 	boolean canMove = true;
@@ -189,49 +237,49 @@ public class MapState
 	}
   }
   
-  public static boolean isBesideQueston()
+  public static boolean isBesideQuestion(int xPos,
+		                                 int yPos)
   {
-	//if player not on farthest top block
-	if (playerYPos < (Constants.VERT_SQUARE_CNT-1))
-	{
-	  //if next block up is quiz block
-	  if (mapConfig[playerXPos][playerYPos+1] == Constants.QUIZ_SQUARE)
-	  {
-		return true;
-	  }
-	}
-	
-	//if player not on farthest right block
-	if (playerXPos < (Constants.HOR_SQUARE_CNT-1))
-	{
-      //if block to right is quiz block
-	  if (mapConfig[playerXPos+1][playerYPos] == Constants.QUIZ_SQUARE)
-	  {
-		return true;
-	  }
-	}
-	
-	//if player not on farthest bottom block
-	if (playerYPos > 0)
-	{
-	  //if next block up is quiz block
-	  if (mapConfig[playerXPos][playerYPos-1] == Constants.QUIZ_SQUARE)
-	  {
-		return true;
-	  }
-	}
-	
-	//if player not on farthest left block
-	if (playerXPos > 0)
-	{
-	  //if block to left is quiz block
-	  if (mapConfig[playerXPos-1][playerYPos] == Constants.QUIZ_SQUARE)
-	  {
-		return true;
-	  }
-	}
-	
-	return false;
+	boolean isBesideQuestion = false;
+	  
+    if (isBesideSquare(xPos,
+    		           yPos,
+    		           Constants.QUIZ_SQUARE) == true)
+    {
+      isBesideQuestion = true;
+    }
+    
+    return isBesideQuestion;
+  }
+  
+  public static boolean isBesidePlayer(int xPos,
+                                       int yPos)
+  {
+    boolean isBesidePlayer = false;
+  
+    if (isBesideSquare(xPos,
+    		           yPos,
+    		           Constants.PLAYER_SQUARE) == true)
+    {
+      isBesidePlayer = true;
+    }
+    
+    return isBesidePlayer;
+  }
+  
+  public static boolean isBesideGround(int xPos,
+                                       int yPos)
+  {
+    boolean isBesideGround = false;
+
+    if (isBesideSquare(xPos,
+                       yPos,
+                       Constants.GROUND_SQUARE) == true)
+    {
+      isBesideGround = true;
+    }
+
+    return isBesideGround;
   }
   
   public static void setActiveQuiz(GenQuizSquare quizSquare)
@@ -263,6 +311,53 @@ public class MapState
 	//initialize finish line
 	initFinishSquare(vertSquareCnt,
 	                 horSquareCnt);
+  }
+  
+  private static boolean isBesideSquare(int xPos,
+		                                int yPos,
+		                                int squareType)
+  {
+	//if square type not on farthest top block
+	if (yPos < (Constants.VERT_SQUARE_CNT-1))
+	{
+	  //if next block up is quiz block
+	  if (mapConfig[xPos][yPos+1] == squareType)
+	  {
+		return true;
+	  }
+	}
+		
+	//if square type not on farthest right block
+	if (xPos < (Constants.HOR_SQUARE_CNT-1))
+	{
+	  //if block to right is quiz block
+	  if (mapConfig[xPos+1][yPos] == squareType)
+	  {
+		return true;
+	  }
+	}
+		
+	//if square type not on farthest bottom block
+	if (yPos > 0)
+	{
+	  //if next block up is quiz block
+	  if (mapConfig[xPos][yPos-1] == squareType)
+	  {
+		return true;
+	  }
+	}
+		
+	//if square type not on farthest left block
+	if (xPos > 0)
+	{
+	  //if block to left is quiz block
+	  if (mapConfig[xPos-1][yPos] == squareType)
+	  {
+		return true;
+	  }
+	}
+	
+	return false;
   }
   
   private static void initBlockSquares(int vertSquareCnt, int horSquareCnt)

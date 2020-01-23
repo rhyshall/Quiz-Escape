@@ -59,8 +59,7 @@ public class QuizGUI extends JFrame implements ActionListener
 
 	buttonChose = (JButton)e.getSource();
 	
-	revealAnswer(buttonChose);
-	
+	revealAnswer(buttonChose);	
 	updateMapState(buttonChose);
 	
 	//go back to player map screen

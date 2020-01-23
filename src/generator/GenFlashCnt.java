@@ -18,12 +18,12 @@ public class GenFlashCnt
 	
 	if (squareCnt >= 3)
 	{
-	  flashCnt = randGen.nextInt(14) + 2;
+	  flashCnt = randGen.nextInt(13) + 3;
 	}
 	
 	else
 	{
-	  flashCnt = randGen.nextInt(8) + 1;
+	  flashCnt = randGen.nextInt(7) + 2;
 	}
   }
 }

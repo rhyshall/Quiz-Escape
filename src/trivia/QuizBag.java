@@ -45,7 +45,10 @@ public class QuizBag
 	  String fileLine = "";
 	  String delimiter = Constants.TRIVIA_FILE_DELIMITER;
 	  String answer = "";
-
+	  
+	  //get junk from first line of file
+	  fileLine = reader.readLine();
+	  
 	  while ((fileLine = reader.readLine()) != null)   
 	  {
 		StringTokenizer tokenizer = new StringTokenizer(fileLine,

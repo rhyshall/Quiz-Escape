@@ -3,6 +3,8 @@ package trivia;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import map.MapState;
+
 public class ExitQuizGUI extends TimerTask
 {
   int waitTime;
@@ -28,6 +30,11 @@ public class ExitQuizGUI extends TimerTask
 	}  
     
     quizGUI.dispose();
+    
+    if (MapState.hasLost() == true)
+    {
+      System.out.println("Lost");
+    }
   }
 }
 
