@@ -1,15 +1,19 @@
 package map;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import common.Colours;
 import common.Constants;
 import generator.GenColour;
@@ -34,6 +38,8 @@ public class MapGUI extends JFrame implements KeyListener
   public int blockWidth;
   public int blockHeight;
   public static boolean victory;
+  public boolean hasStarted = false;
+  JButton promptStart;
 	
   public MapGUI()
   {
@@ -52,6 +58,8 @@ public class MapGUI extends JFrame implements KeyListener
 	
 	saveBorderDim();
 	saveBlockDim();
+	
+	startPrompt();
   }
   
   @Override
@@ -133,23 +141,31 @@ public class MapGUI extends JFrame implements KeyListener
 	 
 	    case KeyEvent.VK_ENTER:
 	    { 
-		  if (MapState.isBesideQuestion(MapState.playerXPos,
-				                        MapState.playerYPos) == true)
-		  {
-	        QuizSquares quizSquares = new QuizSquares();
-	        FlashQuizSquare.quizSquares = quizSquares;
+	      if (hasStarted == true)
+	      {
+		    if (MapState.isBesideQuestion(MapState.playerXPos,
+				                          MapState.playerYPos) == true)
+		    {
+	          QuizSquares quizSquares = new QuizSquares();
+	          FlashQuizSquare.quizSquares = quizSquares;
 	      
-		    GenQuizSquare targetSquare = new GenQuizSquare(quizSquares);
-		    FlashQuizSquare.targetSquare = targetSquare;
+		      GenQuizSquare targetSquare = new GenQuizSquare(quizSquares);
+		      FlashQuizSquare.targetSquare = targetSquare;
 		  
-		    MapState.setActiveQuiz(targetSquare);
+		      MapState.setActiveQuiz(targetSquare);
 		  
-		    flashSquares();
-		  }
-		
-		  repaint();
-		
-		  break;
+		      flashSquares();
+		    }
+		    
+		    repaint();		
+		    break;
+	      }
+	      
+	      else
+	      {
+	        //remove(promptStart);
+	        hasStarted = true;
+	      }
 	    }
 	  }
 	}
@@ -269,6 +285,33 @@ public class MapGUI extends JFrame implements KeyListener
 	//calculate and save block dimensions
 	blockWidth = (screenWidth-leftBorderSize-rightBorderSize)/horSquareCnt;
 	blockHeight = (screenHeight-topBorderSize-bottomBorderSize)/vertSquareCnt;
+  }
+  
+private void startPrompt()
+  {
+	JPanel promptPanel;
+	  
+	promptStart = new JButton(Constants.START_PROMPT_TEXT);
+	promptStart.setBounds(186, 
+			              275, 
+			              311, 
+			              56); 
+	promptStart.setBackground(Colours.LIGHT_GREY_1);
+	Border thickBorder = new LineBorder(Colours.BLACK_1, 
+			                            1);
+	promptStart.setBorder(thickBorder);
+	promptStart.setFont(new Font("TimesRoman",
+			                     Font.PLAIN,
+			                     22));
+
+	promptPanel = new JPanel();
+	promptPanel.setLayout(null);
+	promptPanel.setPreferredSize(new Dimension(200, 
+			                                   25));
+	promptPanel.add(promptStart); 
+	promptStart.addKeyListener(this);
+	promptStart.setFocusable(true); 
+	getContentPane().add(promptPanel);
   }
   
   private int calcNextXPos(int nextIndex)

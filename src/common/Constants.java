@@ -2,6 +2,9 @@ package common;
 
 public class Constants 
 {
+  //start prompt
+  public static final String START_PROMPT_TEXT = "Press Enter to Play"; /* title of welcome screen */
+	
   //game map dimensions
   public static final int MAP_WIDTH = 700; /* width of game map in pixels */
   public static final int MAP_HEIGHT = 700; /* height of game map in pixels */
@@ -17,7 +20,7 @@ public class Constants
   public static final int HOR_SQUARE_CNT = 11; /* width of map in squares */
   
   //title of application seen at top of window
-  public static final String TITLE = "Steampunk Trivia";
+  public static final String TITLE = "Quiz Escape";
   
   //square types on game map
   public static final int PLAYER_SQUARE = 1; /* player's current position */
@@ -39,6 +42,17 @@ public class Constants
   public static final String TRIVIA_FILE_PATH = "\\data\\quiz_set.tsv"; /* path to trivia question file from project directory */
   public static final String TRIVIA_FILE_DELIMITER = "\t"; /* delimiter of trivia question file */
   public static final int SUGG_MAX_QUEST = 2000; /* estimated value for number of questions in trivia file */
+  
+  //black hole constants
+  public static final int MIN_BLACK_HOLE_CNT = 6; /* minimum start count of black hole obstacles */
+  public static final int MAX_BLACK_HOLE_CNT = 14; /* maximum start count of black hole obstacles */
+  
+  //direction constants
+  public static final int UP = 0; /* represents "up" direction */
+  public static final int RIGHT = 1; /* represents "right" direction */
+  public static final int DOWN = 2; /* represents "down" direction */
+  public static final int LEFT = 3; /* represents "left" direction */
+  public static final int DIRECTION_CNT = 4; /* number of direction constants */
   
   //win configuration file parameters
   public static final String WIN_FILE_PATH = "\\data\\winConfig.txt"; /* path to win message text file from project directory */
