@@ -390,7 +390,8 @@ public class QuizGUI extends JFrame implements ActionListener
 	
 	timer = new Timer(true);
 	exit = new ExitQuizGUI(Constants.MAIN_LOAD_TIME,
-                           this);
+                           this,
+                           mapGUI);
 	
 	//call task to exit quiz GUI in 150 milliseconds
 	timer.schedule(exit,

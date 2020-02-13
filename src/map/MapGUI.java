@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +18,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import common.Colours;
 import common.Constants;
+import generator.GenBlackHoles;
 import generator.GenColour;
 import generator.GenCoordinate;
 import generator.GenFlashCnt;
@@ -39,7 +42,11 @@ public class MapGUI extends JFrame implements KeyListener
   public int blockHeight;
   public static boolean victory;
   public boolean hasStarted = false;
-  JButton promptStart;
+  public boolean spawnHoles = false;
+  public static JPanel promptPanel;
+  public static JButton promptStart;
+  public static int blackHoles[];
+  public static int blackHoleIndex = 0;
 	
   public MapGUI()
   {
@@ -81,7 +88,7 @@ public class MapGUI extends JFrame implements KeyListener
 		  {
 		    MapState.movePlayerUp();
 		    repaint();
-		    victory = true;
+		    
 		    if (victory == true)
 		    {
 			  victory();
@@ -160,11 +167,14 @@ public class MapGUI extends JFrame implements KeyListener
 		    repaint();		
 		    break;
 	      }
-	      
-	      else
+	    }
+	    
+	    case KeyEvent.VK_SPACE:
+	    {  
+	      if (spawnHoles == false)
 	      {
-	        //remove(promptStart);
-	        hasStarted = true;
+	        spawnHoles = true;	      
+	        spawnHoles();
 	      }
 	    }
 	  }
@@ -178,36 +188,121 @@ public class MapGUI extends JFrame implements KeyListener
   
   public void paint(Graphics g)
   {
+	if (victory == true)
+	{ 
+	  paintVictory(g);
+	}
+	
+	else
+	{ 
+	  paintMap(g);
+		
+	  if (spawnHoles == true)
+	  { 
+		if (blackHoleIndex == 0)
+		{
+		  try 
+	      {
+			TimeUnit.MILLISECONDS.sleep(Constants.BLACK_HOLES_LOAD_TIME);
+		  } 
+		  
+		  catch (InterruptedException e) 
+	      {
+		    e.printStackTrace();
+		  }  
+		}
+		
+		paintHole(g);
+	  }
+	}
+  }
+  
+  private void paintMap(Graphics g)
+  {
 	int i = 0;
 	int j = 0;
 	int xPos = 0;
 	int yPos = 0;
 	Color colour = null;
-	GenCoordinate genCoord;
 	
-	if (victory == true)
-	{ 
-	  //display win screen
-	  if (GenCoordinate.isBuilt() == false)
-	  {
-		GenCoordinate.construct();
-	  }
+	//display game map
+    for (i = 0; i < horSquareCnt; i++)
+    {
+      xPos = calcNextXPos(i);
 
-	  genCoord = new GenCoordinate();
-	  i = genCoord.xPos;
-	  j = genCoord.yPos;
+      for (j = 0; j < vertSquareCnt; j++)
+      {
+	    yPos = calcNextYPos(j);
+        
+        colour = getColourType(i,
+    		                   j);
+        g.setColor(colour);
+
+        g.fillRect(xPos, 
+    		       yPos, 
+    		       blockWidth, 
+    		       blockHeight);
+      
+        g.setColor(Color.black);
+      
+        g.drawRect(xPos, 
+    		       yPos, 
+    		       blockWidth, 
+    		       blockHeight);
+      }
+    }
+  }
+  
+  private void paintHole(Graphics g)
+  {
+	int i = 0;
+	int j = 0;
+	int xPos = 0;
+	int yPos = 0;
+	Color colour = null;
 	
-	  if ((i == -1)
-	    || (j == -1))
+	if (blackHoles.length == blackHoleIndex)
+	{		  			
+	  //initialize first question squares
+	  MapState.initQuizSquares(vertSquareCnt,
+		                       horSquareCnt);
+	  
+	  blackHoleIndex = 0;
+	  spawnHoles = false;
+	  hasStarted = true;
+	  
+	  repaint();
+	  
+	  try 
+      {
+		TimeUnit.MILLISECONDS.sleep(Constants.QUIZ_SQUARE_LOAD_TIME);
+	  } 
+	  
+	  catch (InterruptedException e) 
+      {
+	    e.printStackTrace();
+	  } 
+	  
+	  PaintMetronome.stop();
+	}
+	
+	else 
+	{
+      i = blackHoles[blackHoleIndex] % horSquareCnt;
+      j = blackHoles[blackHoleIndex] / horSquareCnt;
+    
+	  xPos = calcNextXPos(i);
+	  yPos = calcNextYPos(j);
+		
+	  MapState.mapConfig[i][j] = Constants.BLACK_HOLE_SQUARE; 
+	  
+	  if (MapState.hasLost() == true)
 	  {
-		FlashWin.stop();
+		MapState.mapConfig[i][j] = Constants.BLOCK_SQUARE;
 	  }
 	  
 	  else
 	  {
-	    xPos = calcNextXPos(i);
-	    yPos = calcNextYPos(j);
-		
 	    colour = getColourType(i,
                                j);
         g.setColor(colour);
@@ -223,38 +318,58 @@ public class MapGUI extends JFrame implements KeyListener
                    yPos, 
                    blockWidth, 
                    blockHeight);
+      
+        blackHoleIndex++; 
 	  }
-	}
-	
-	else
-	{
-	  //display game map
-      for(i = 0; i < horSquareCnt; i++)
-	  {
-        xPos = calcNextXPos(i);
-    	
-	    for(j = 0; j < vertSquareCnt; j++)
-	    {
-		  yPos = calcNextYPos(j);
-	    
-	      colour = getColourType(i,
-	    		                 j);
-	      g.setColor(colour);
+	} 
+  }
+  
+  private void paintVictory(Graphics g)
+  {
+	int i = 0;
+	int j = 0;
+	int xPos = 0;
+	int yPos = 0;
+	Color colour = null;
+	GenCoordinate genCoord;
+	  
+    //display win screen
+    if (GenCoordinate.isBuilt() == false)
+    {
+	  GenCoordinate.construct();
+    }
 
-	      g.fillRect(xPos, 
-	    		     yPos, 
-	    		     blockWidth, 
-	    		     blockHeight);
-	      
-	      g.setColor(Color.black);
-	      
-	      g.drawRect(xPos, 
-	    		     yPos, 
-	    		     blockWidth, 
-	    		     blockHeight);
-	    }
-	  }
-	}
+    genCoord = new GenCoordinate();
+    i = genCoord.xPos;
+    j = genCoord.yPos;
+
+    if ((i == -1)
+      || (j == -1))
+    {
+	  PaintMetronome.stop();
+    }
+  
+    else
+    {
+      xPos = calcNextXPos(i);
+      yPos = calcNextYPos(j);
+	
+      colour = getColourType(i,
+                             j);
+      g.setColor(colour);
+
+      g.fillRect(xPos, 
+                 yPos, 
+                 blockWidth, 
+                 blockHeight);
+
+      g.setColor(Color.black);
+
+      g.drawRect(xPos, 
+                 yPos, 
+                 blockWidth, 
+                 blockHeight);
+    }
   }
   
   private void setProperties()
@@ -288,9 +403,7 @@ public class MapGUI extends JFrame implements KeyListener
   }
   
 private void startPrompt()
-  {
-	JPanel promptPanel;
-	  
+  {	  
 	promptStart = new JButton(Constants.START_PROMPT_TEXT);
 	promptStart.setBounds(186, 
 			              275, 
@@ -425,12 +538,28 @@ private void startPrompt()
   {
 	WinState winState = new WinState();
 	Timer timer = new Timer(true);
-	TimerTask flashWin = new FlashWin(this);
+	TimerTask paintMetronome = new PaintMetronome(this);
 	
 	winState.buildWinMsg();
 	
-	timer.scheduleAtFixedRate(flashWin,
+	timer.scheduleAtFixedRate(paintMetronome,
                               0,
                               Constants.WIN_FLASH_DELAY);	
+  }
+  
+  public void spawnHoles()
+  {
+	GenBlackHoles genBlackHoles;
+	Timer timer;
+	TimerTask paintMetronome;
+	genBlackHoles = new GenBlackHoles();
+	blackHoles = genBlackHoles.get();
+	
+	timer = new Timer(true);
+	paintMetronome = new PaintMetronome(this);
+	
+	timer.scheduleAtFixedRate(paintMetronome,
+                              0,
+                              Constants.SPAWN_BLACK_HOLES_DELAY);	
   }
 }

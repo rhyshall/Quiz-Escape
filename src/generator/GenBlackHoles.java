@@ -1,5 +1,7 @@
 package generator;
 
+
+import java.util.Arrays;
 import java.util.Random;
 
 import common.Constants;
@@ -8,6 +10,7 @@ public class GenBlackHoles
 {
   private static boolean[] blackHoles; /* true means black hole exists at given index */
   private static int[] blackList;
+  private static int holeCnt;
   
   public GenBlackHoles()
   {
@@ -16,9 +19,53 @@ public class GenBlackHoles
 	genCoords();
   }
   
-  public boolean[] get()
+  public int[] get()
   {
-	return blackHoles;
+	int[] blackHoleList;
+	int i = 0;
+	int index = 0;
+	int coordCnt = 0;
+	blackHoleList = new int[holeCnt];
+	coordCnt = blackHoles.length;
+	
+	//create list of black hole indexes
+	for (i= 0; i < coordCnt; i++)
+	{
+	  if (blackHoles[i] == true)
+	  {
+		blackHoleList[index] = i;
+		index++;
+	  }
+	}
+	
+	//shuffle black hole index list
+	blackHoleList = shuffleList(blackHoleList);
+	
+	return blackHoleList;
+  }
+  
+  private static int[] shuffleList(int[] blackHoleList)
+  {
+    int i;
+	Random randGen = new Random();
+	int indexOne = 0;
+	int indexTwo = 0;
+	int upperBound = 0;
+	int temp = 0;
+	
+	upperBound = blackHoleList.length;
+	
+	for (i = 0; i < 100; i++)
+	{
+	  indexOne = randGen.nextInt(upperBound);
+	  indexTwo = randGen.nextInt(upperBound);
+	  
+	  temp = blackHoleList[indexOne];
+	  blackHoleList[indexOne] = blackHoleList[indexTwo];
+	  blackHoleList[indexTwo] = temp;
+	}
+	
+	return blackHoleList;
   }
   
   private static void genCoords()
@@ -27,7 +74,6 @@ public class GenBlackHoles
 	Random randGen = new Random();
 	int index = 0;
 	int prevIndex = 0;
-	int holeCnt = 0;
 	int maxHoleCnt = Constants.MAX_BLACK_HOLE_CNT;
 	int minHoleCnt = Constants.MIN_BLACK_HOLE_CNT;
 	int upperBound = 0;
@@ -53,7 +99,7 @@ public class GenBlackHoles
 		//choose random index for next black hole
 	    index = genCoord(); 
 	  }
-	  System.out.println(index);
+	  
 	  blackHoles[index] = true;
 	  
 	  //if 0, choose random index
@@ -81,14 +127,14 @@ public class GenBlackHoles
   {
 	int horSquareCnt = Constants.HOR_SQUARE_CNT;
 	int vertSquareCnt = Constants.VERT_SQUARE_CNT;
-	int upperBound = horSquareCnt * vertSquareCnt;
+	int upperBound = (horSquareCnt * vertSquareCnt) - 1;
 	Random randGen = new Random();
 	int index = 0;
-	
+    
 	while (true)
 	{
 	  index = randGen.nextInt(upperBound);
-		
+	  
       if (blackHoles[index] == false)
       {
 	    if (inBlackList(index) == false)
@@ -335,20 +381,29 @@ public class GenBlackHoles
 	{
 	  blackHoles[i] = false;
 	}
+	
+	holeCnt = 0;
   }
   
   private static void initBlackList()
   {
     int horSquareCnt = Constants.HOR_SQUARE_CNT;
 	int vertSquareCnt = Constants.VERT_SQUARE_CNT;
-	int upperBound = horSquareCnt * vertSquareCnt;	  
+	int upperBound = (horSquareCnt * vertSquareCnt)-1;	  
 	
-    blackList = new int[]{upperBound-(horSquareCnt/2+1), /* player square */
-                          upperBound-(horSquareCnt/2), /* left of player square */
-                          upperBound-(horSquareCnt/2+2), /* right of player square */
-                          upperBound-(horSquareCnt/2+1)-horSquareCnt, /* top of player square */
-                          upperBound-(horSquareCnt/2)-horSquareCnt, /* top left of player square */
-                          upperBound-(horSquareCnt/2+2)-horSquareCnt, /* top right of player square */
-                          horSquareCnt/2+1}; /* finish square */
+    blackList = new int[]{upperBound-(horSquareCnt/2), /* player square */
+                          upperBound-(horSquareCnt/2)-1, /* left of player square */
+                          upperBound-(horSquareCnt/2)-2, /* two-left of player square */
+                          upperBound-(horSquareCnt/2)+1, /* right of player square */
+                          upperBound-(horSquareCnt/2)+2, /* two-right of player square */
+                          upperBound-(horSquareCnt/2)-horSquareCnt, /* top of player square */
+                          upperBound-(horSquareCnt/2)-horSquareCnt-1, /* top left of player square */
+                          upperBound-(horSquareCnt/2)-horSquareCnt-2, /* two-top left of player square */
+                          upperBound-(horSquareCnt/2)-horSquareCnt+1, /* top right of player square */
+                          upperBound-(horSquareCnt/2)-horSquareCnt+2, /* two-top right of player square */
+                          upperBound-(horSquareCnt/2)-(horSquareCnt*2), /* two-top of player square */
+                          upperBound-(horSquareCnt/2)-(horSquareCnt*2)+1, /* two-top right of player square */
+                          upperBound-(horSquareCnt/2)-(horSquareCnt*2)-1, /* two-top left of player square */
+                          horSquareCnt/2}; /* finish square */
   }
 }

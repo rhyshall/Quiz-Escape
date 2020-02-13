@@ -39,8 +39,10 @@ public class MapState
 	  {
 		if (mapConfig[i][j] == blockSquare)
 		{
-		  if (isBesideGround(i,
+		  if ((isBesideGround(i,
 			                 j) == true)
+		    || (isBesidePlayer(i,
+			                   j) == true))
 	      {
             hasLost = false;
             break;
@@ -288,6 +290,16 @@ public class MapState
 	activeQuizSquare.yPos = quizSquare.yPos;
   }
   
+  public static void initQuizSquares(int vertSquareCnt, 
+                                     int horSquareCnt)
+  {
+    int quizSquare = Constants.QUIZ_SQUARE;
+
+    mapConfig[(horSquareCnt/2)-1][vertSquareCnt-1] = quizSquare;
+    mapConfig[horSquareCnt/2][vertSquareCnt-2] = quizSquare;
+    mapConfig[(horSquareCnt/2)+1][vertSquareCnt-1] = quizSquare;
+  }
+  
   private static void initMapConfig()
   {
 	int vertSquareCnt = Constants.VERT_SQUARE_CNT;
@@ -303,10 +315,6 @@ public class MapState
 	//initialize player's original starting position
 	initPlayerSquare(vertSquareCnt,
 	                 horSquareCnt);
-	
-	//initialize first question squares
-	initQuizSquares(vertSquareCnt,
-	                horSquareCnt);
 	
 	//initialize finish line
 	initFinishSquare(vertSquareCnt,
@@ -382,16 +390,6 @@ public class MapState
     
     playerXPos = horSquareCnt / 2; 
     playerYPos = vertSquareCnt-1;
-  }
-  
-  private static void initQuizSquares(int vertSquareCnt, 
-		                              int horSquareCnt)
-  {
-	int quizSquare = Constants.QUIZ_SQUARE;
-	
-	mapConfig[(horSquareCnt/2)-1][vertSquareCnt-1] = quizSquare;
-	mapConfig[horSquareCnt/2][vertSquareCnt-2] = quizSquare;
-	mapConfig[(horSquareCnt/2)+1][vertSquareCnt-1] = quizSquare;
   }
   
   private static void initFinishSquare(int vertSquareCnt, 

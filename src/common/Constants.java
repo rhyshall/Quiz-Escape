@@ -3,7 +3,7 @@ package common;
 public class Constants 
 {
   //start prompt
-  public static final String START_PROMPT_TEXT = "Press Enter to Play"; /* title of welcome screen */
+  public static final String START_PROMPT_TEXT = "Press Space Bar to Play"; /* title of welcome screen */
 	
   //game map dimensions
   public static final int MAP_WIDTH = 700; /* width of game map in pixels */
@@ -30,10 +30,15 @@ public class Constants
   public static final int QUIZ_SQUARE = 5; /* block- player may uncover if next question answered correctly */
   public static final int FINISH_SQUARE = 6; /* finish line */
   
+  
   //wait-time parameters
   public static final int FLASH_DELAY = 125; /* flash duration (in milliseconds) of each square when choosing next quiz square */
   public static final int QUIZ_LOAD_TIME = 1150; /* time-to-wait (in milliseconds) before quiz screen pops up */
   public static final int MAIN_LOAD_TIME = 1600; /* time-to-wait (in milliseconds) to transition from quiz screen to main screen */
+  public static final int BLACK_HOLES_LOAD_TIME = 375; /* time-to-wait (in milliseconds) between space bar trigger and spawning black holes */
+  public static final int QUIZ_SQUARE_LOAD_TIME = 900; /* time-to-wait (in milliseconds) between spawning black holes and spawning quiz squares */
+  public static final int SPAWN_BLACK_HOLES_DELAY = 275; /* delay between black hole spawns */
+  public static final int WIN_FLASH_DELAY = 100; /* flash duration (in milliseconds) of each square when constructing win message */
   
   //number of answer choices for each question
   public static final int ANSWER_CHOICES_CNT = 4; 
@@ -44,8 +49,8 @@ public class Constants
   public static final int SUGG_MAX_QUEST = 2000; /* estimated value for number of questions in trivia file */
   
   //black hole constants
-  public static final int MIN_BLACK_HOLE_CNT = 6; /* minimum start count of black hole obstacles */
-  public static final int MAX_BLACK_HOLE_CNT = 14; /* maximum start count of black hole obstacles */
+  public static final int MIN_BLACK_HOLE_CNT = 10; /* minimum start count of black hole obstacles */
+  public static final int MAX_BLACK_HOLE_CNT = 18; /* maximum start count of black hole obstacles */
   
   //direction constants
   public static final int UP = 0; /* represents "up" direction */
@@ -59,7 +64,6 @@ public class Constants
   public static final String WIN_FILE_DELIMITER = " "; /* delimiter of win message text file */
   public static final int WIN_MSG_BACKGROUND = 0; /* represents background square of win message */
   public static final int WIN_MSG_FOREGROUND = 1; /* represents text square of win message */
-  public static final int WIN_FLASH_DELAY = 100; /* flash duration (in milliseconds) of each square when constructing win message */
   
   //font configuration file parameters
   public static final String QUEST_FONT_FILE_PATH = "\\data\\questionFonts.txt"; /* path to question font configuration from project directory */

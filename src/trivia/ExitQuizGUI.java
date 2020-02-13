@@ -3,18 +3,22 @@ package trivia;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import map.MapGUI;
 import map.MapState;
 
 public class ExitQuizGUI extends TimerTask
 {
   int waitTime;
   QuizGUI quizGUI;
+  MapGUI mapGUI;
   
   public ExitQuizGUI(int waitTime,
-		             QuizGUI quizGUI)
+		             QuizGUI quizGUI,
+		             MapGUI mapGUI)
   {
 	this.waitTime = waitTime;
 	this.quizGUI = quizGUI;
+	this.mapGUI = mapGUI;
   }
 	
   @Override
@@ -30,7 +34,8 @@ public class ExitQuizGUI extends TimerTask
 	}  
     
     quizGUI.dispose();
-    
+    mapGUI.repaint();
+   
     if (MapState.hasLost() == true)
     {
       System.out.println("Lost");

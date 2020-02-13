@@ -2,12 +2,12 @@ package map;
 
 import java.util.TimerTask;
 
-public class FlashWin extends TimerTask
+public class PaintMetronome extends TimerTask
 {
   public MapGUI mapGUI;
   public static boolean stop;
 	
-  public FlashWin(MapGUI mapGUI)
+  public PaintMetronome(MapGUI mapGUI)
   {
 	this.mapGUI = mapGUI;
 	stop = false;
@@ -24,6 +24,7 @@ public class FlashWin extends TimerTask
 	if (stop == true)
 	{
 	  cancel();
+	  stop = false;
 	}
 	
 	else
