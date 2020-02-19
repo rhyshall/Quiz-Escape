@@ -36,8 +36,8 @@ public class Constants
   public static final int QUIZ_LOAD_TIME = 1150; /* time-to-wait (in milliseconds) before quiz screen pops up */
   public static final int MAIN_LOAD_TIME = 1600; /* time-to-wait (in milliseconds) to transition from quiz screen to main screen */
   public static final int BLACK_HOLES_LOAD_TIME = 375; /* time-to-wait (in milliseconds) between space bar trigger and spawning black holes */
-  public static final int QUIZ_SQUARE_LOAD_TIME = 900; /* time-to-wait (in milliseconds) between spawning black holes and spawning quiz squares */
-  public static final int SPAWN_BLACK_HOLES_DELAY = 275; /* delay between black hole spawns */
+  public static final int QUIZ_SQUARE_LOAD_TIME = 1500; /* time-to-wait (in milliseconds) between spawning black holes and spawning quiz squares */
+  public static final int SPAWN_BLACK_HOLES_DELAY = 235; /* delay between black hole spawns */
   public static final int WIN_FLASH_DELAY = 100; /* flash duration (in milliseconds) of each square when constructing win message */
   
   //number of answer choices for each question
@@ -49,8 +49,8 @@ public class Constants
   public static final int SUGG_MAX_QUEST = 2000; /* estimated value for number of questions in trivia file */
   
   //black hole constants
-  public static final int MIN_BLACK_HOLE_CNT = 10; /* minimum start count of black hole obstacles */
-  public static final int MAX_BLACK_HOLE_CNT = 18; /* maximum start count of black hole obstacles */
+  public static final int MIN_BLACK_HOLE_CNT = 20; /* minimum start count of black hole obstacles */
+  public static final int MAX_BLACK_HOLE_CNT = 27; /* maximum start count of black hole obstacles */
   
   //direction constants
   public static final int UP = 0; /* represents "up" direction */
@@ -70,4 +70,12 @@ public class Constants
   public static final String ANSWER_FONT_FILE_PATH = "\\data\\answerFonts.txt"; /* path to answer font configuration from project directory */
   public static final String FONT_SIZE_DELIMITER = "|"; /* separates question size range from font size */
   public static final String TEXT_SIZE_DELIMITER = " "; /* separates text size lower bound from text size upper bound */
+  
+  public static final String WIN_TEXT = "Great Job! You Escaped!"; /* Displayed text when player wins */
+  public static final String LOSE_TEXT = "You Lose! The Black Holes Surround You!"; /* Displayed text when player loses */
+  
+  public static final int ENCORE_SCREEN_WIDTH = 450; /* width of encore screen in pixels */
+  public static final int ENCORE_SCREEN_HEIGHT = 450; /* height of encore screen in pixels */
+  public static final int ENCORE_BUTTON_WIDTH = 150; /* width of play-again buttons */
+  public static final int ENCORE_BUTTON_HEIGHT = 40; /* height of play-again buttons */
 }

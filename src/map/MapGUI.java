@@ -18,6 +18,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import common.Colours;
 import common.Constants;
+import common.EncoreGUI;
 import generator.GenBlackHoles;
 import generator.GenColour;
 import generator.GenCoordinate;
@@ -347,6 +348,10 @@ public class MapGUI extends JFrame implements KeyListener
       || (j == -1))
     {
 	  PaintMetronome.stop();
+	  
+      EncoreGUI encoreGUI = new EncoreGUI(this, 
+                                          true);
+      encoreGUI.run();
     }
   
     else
