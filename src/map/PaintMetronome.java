@@ -18,7 +18,8 @@ public class PaintMetronome extends TimerTask
 	stop = true;
   }
   
-  @Override
+@SuppressWarnings("deprecation")
+@Override
   public void run()
   {
 	if (stop == true)
@@ -29,6 +30,8 @@ public class PaintMetronome extends TimerTask
 	
 	else
 	{
+	  mapGUI.promptStart.resize(0, 
+			                    0);
 	  mapGUI.repaint();
 	}
   }

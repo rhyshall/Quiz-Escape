@@ -15,6 +15,7 @@ public class Colours
   public static Color YELLOW_2;
   public static Color GREEN_1;
   public static Color GREEN_2;
+  public static Color GREEN_3;
   public static Color RED_1;
   public static Color WHITE_1;
   public static Color BLACK_1;
@@ -50,8 +51,8 @@ public class Colours
                             70);
 	
 	YELLOW_1 = new Color(255, 
-	                     237, 
-	                     155);
+	                     250, 
+	                     172);
 	
 	YELLOW_2 = new Color(255,
                          243,

@@ -37,7 +37,7 @@ public class Constants
   public static final int MAIN_LOAD_TIME = 1600; /* time-to-wait (in milliseconds) to transition from quiz screen to main screen */
   public static final int BLACK_HOLES_LOAD_TIME = 375; /* time-to-wait (in milliseconds) between space bar trigger and spawning black holes */
   public static final int QUIZ_SQUARE_LOAD_TIME = 1500; /* time-to-wait (in milliseconds) between spawning black holes and spawning quiz squares */
-  public static final int SPAWN_BLACK_HOLES_DELAY = 235; /* delay between black hole spawns */
+  public static final int SPAWN_BLACK_HOLES_DELAY = 200; /* delay between black hole spawns */
   public static final int WIN_FLASH_DELAY = 100; /* flash duration (in milliseconds) of each square when constructing win message */
   
   //number of answer choices for each question
@@ -49,8 +49,8 @@ public class Constants
   public static final int SUGG_MAX_QUEST = 2000; /* estimated value for number of questions in trivia file */
   
   //black hole constants
-  public static final int MIN_BLACK_HOLE_CNT = 20; /* minimum start count of black hole obstacles */
-  public static final int MAX_BLACK_HOLE_CNT = 27; /* maximum start count of black hole obstacles */
+  public static final int MIN_BLACK_HOLE_CNT = 24; /* minimum start count of black hole obstacles */
+  public static final int MAX_BLACK_HOLE_CNT = 30; /* maximum start count of black hole obstacles */
   
   //direction constants
   public static final int UP = 0; /* represents "up" direction */
