@@ -53,7 +53,7 @@ public class QuizBag
 	  {
 		StringTokenizer tokenizer = new StringTokenizer(fileLine,
 				                                        delimiter);
-		
+
 		Quiz quiz = new Quiz();
 		quiz.setQuestion(tokenizer.nextToken());
 		

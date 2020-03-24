@@ -102,11 +102,11 @@ public class GenBlackHoles
 	  
 	  blackHoles[index] = true;
 	  
-	  //if 0, choose random index
-	  //if 1, join to previously generated coordinate
-	  joinIndex = randGen.nextInt(2);
+	  //if 0,1 or 2: choose random index
+	  //if 3 or 4, join to previously generated coordinate
+	  joinIndex = randGen.nextInt(5);
 	  
-	  if (joinIndex == 1)
+	  if (joinIndex > 2)
 	  {
 		if (canJoin(index) == true)
 		{		  
@@ -398,12 +398,8 @@ public class GenBlackHoles
                           upperBound-(horSquareCnt/2)+2, /* two-right of player square */
                           upperBound-(horSquareCnt/2)-horSquareCnt, /* top of player square */
                           upperBound-(horSquareCnt/2)-horSquareCnt-1, /* top left of player square */
-                          upperBound-(horSquareCnt/2)-horSquareCnt-2, /* two-top left of player square */
                           upperBound-(horSquareCnt/2)-horSquareCnt+1, /* top right of player square */
-                          upperBound-(horSquareCnt/2)-horSquareCnt+2, /* two-top right of player square */
                           upperBound-(horSquareCnt/2)-(horSquareCnt*2), /* two-top of player square */
-                          upperBound-(horSquareCnt/2)-(horSquareCnt*2)+1, /* two-top right of player square */
-                          upperBound-(horSquareCnt/2)-(horSquareCnt*2)-1, /* two-top left of player square */
                           horSquareCnt/2}; /* finish square */
   }
 }

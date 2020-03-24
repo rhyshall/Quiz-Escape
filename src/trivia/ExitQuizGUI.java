@@ -3,6 +3,7 @@ package trivia;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import common.Constants;
 import common.EncoreGUI;
 import map.MapGUI;
 import map.MapState;
@@ -39,6 +40,15 @@ public class ExitQuizGUI extends TimerTask
    
     if (MapState.hasLost() == true)
     {
+  	  try 
+  	  {
+  		TimeUnit.MILLISECONDS.sleep(Constants.ENCORE_LOSS_DELAY);
+  	  } 
+  	  catch (InterruptedException e) 
+  	  {
+  		e.printStackTrace();
+  	  }
+    	
       EncoreGUI encoreGUI = new EncoreGUI(mapGUI, 
     		                              false);
       encoreGUI.run();

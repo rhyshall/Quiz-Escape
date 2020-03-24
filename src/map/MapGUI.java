@@ -337,7 +337,7 @@ public class MapGUI extends JFrame implements KeyListener
     //display win screen
     if (GenCoordinate.isBuilt() == false)
     {
-	  GenCoordinate.construct();
+      GenCoordinate.construct();
     }
 
     genCoord = new GenCoordinate();
@@ -348,6 +348,15 @@ public class MapGUI extends JFrame implements KeyListener
       || (j == -1))
     {
 	  PaintMetronome.stop();
+	  
+	  try 
+	  {
+		TimeUnit.MILLISECONDS.sleep(Constants.ENCORE_WIN_DELAY);
+	  } 
+	  catch (InterruptedException e) 
+	  {
+		e.printStackTrace();
+	  }
 	  
       EncoreGUI encoreGUI = new EncoreGUI(this, 
                                           true);
