@@ -16,7 +16,7 @@ public class MapState
     initMapConfig();
     activeQuizSquare = new QuizSquare();
   }
-  
+
   public static boolean hasLost()
   {
 	int i;

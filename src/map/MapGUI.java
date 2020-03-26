@@ -42,6 +42,7 @@ public class MapGUI extends JFrame implements KeyListener
   public int blockWidth;
   public int blockHeight;
   public static boolean victory;
+  public static boolean winScreen;
   public boolean hasStarted = false;
   public boolean spawnHoles = false;
   public static JPanel promptPanel;
@@ -56,7 +57,9 @@ public class MapGUI extends JFrame implements KeyListener
 	Colours.assemble();
 	MapState.construct(); 	
 	trivia = new Trivia(); 
+	
 	victory = false;
+	winScreen = false;
   }
 	
   public void run()
@@ -121,6 +124,8 @@ public class MapGUI extends JFrame implements KeyListener
 	      { 
 	        MapState.movePlayerDown();
 	        repaint();
+	        
+	        
 	      
 	        if (victory == true)
 		    {
@@ -189,7 +194,7 @@ public class MapGUI extends JFrame implements KeyListener
   
   public void paint(Graphics g)
   {
-	if (victory == true)
+	if (winScreen == true)
 	{ 
 	  paintVictory(g);
 	}
@@ -197,6 +202,22 @@ public class MapGUI extends JFrame implements KeyListener
 	else
 	{ 
 	  paintMap(g);
+	  
+	  if (victory == true)
+	  {
+	    try 
+		{
+		  TimeUnit.MILLISECONDS.sleep(Constants.WIN_MSG_ON_FINISH);
+		} 
+			  
+	    catch (InterruptedException i) 
+		{
+		  i.printStackTrace();
+		}  
+		 
+		victory = false;
+	   	winScreen = true;
+	  }
 		
 	  if (spawnHoles == true)
 	  { 
@@ -466,7 +487,7 @@ private void startPrompt()
 	int winText = Constants.WIN_MSG_FOREGROUND;
 	Color colour = null;
 	
-	if (victory == true)
+	if (winScreen == true)
 	{
 	  squareType = WinState.winConfig[xPos][yPos];
 	  
@@ -553,7 +574,7 @@ private void startPrompt()
 	WinState winState = new WinState();
 	Timer timer = new Timer(true);
 	TimerTask paintMetronome = new PaintMetronome(this);
-	
+
 	winState.buildWinMsg();
 	
 	timer.scheduleAtFixedRate(paintMetronome,

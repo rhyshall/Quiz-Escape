@@ -89,8 +89,7 @@ public class GenBlackHoles
 	  if (doJoin == true)
 	  {
 		//join next black hole to previous index
-	    index = genJoinCoord(prevIndex);
-	    
+	    index = genJoinCoord(prevIndex);	    
 	    doJoin = false;
 	  }
 	  
@@ -102,11 +101,11 @@ public class GenBlackHoles
 	  
 	  blackHoles[index] = true;
 	  
-	  //if 0,1 or 2: choose random index
-	  //if 3 or 4, join to previously generated coordinate
-	  joinIndex = randGen.nextInt(5);
+	  //if 0,1,2,3 or 4: choose random index
+	  //if 5 or 6, join to previously generated coordinate
+	  joinIndex = randGen.nextInt(7);
 	  
-	  if (joinIndex > 2)
+	  if (joinIndex > 4)
 	  {
 		if (canJoin(index) == true)
 		{		  
@@ -127,14 +126,14 @@ public class GenBlackHoles
   {
 	int horSquareCnt = Constants.HOR_SQUARE_CNT;
 	int vertSquareCnt = Constants.VERT_SQUARE_CNT;
-	int upperBound = (horSquareCnt * vertSquareCnt) - 1;
+	int upperBound = horSquareCnt * vertSquareCnt;
 	Random randGen = new Random();
 	int index = 0;
     
 	while (true)
 	{
 	  index = randGen.nextInt(upperBound);
-	  
+	 
       if (blackHoles[index] == false)
       {
 	    if (inBlackList(index) == false)
@@ -158,7 +157,7 @@ public class GenBlackHoles
 	while (breakLoop == false)
 	{
 	  direction = randGen.nextInt(Constants.DIRECTION_CNT);
-	
+
 	  switch (direction)
 	  {
 	    case Constants.UP: 
@@ -282,9 +281,9 @@ public class GenBlackHoles
   {
 	int horSquareCnt = Constants.HOR_SQUARE_CNT;
 	boolean canJoinRight = true;
-	
+
 	//if at right boundary
-	if (index%(horSquareCnt-1) == 0)
+	if ((index+1)%(horSquareCnt) == 0)
 	{
 	  canJoinRight = false;
 	}
