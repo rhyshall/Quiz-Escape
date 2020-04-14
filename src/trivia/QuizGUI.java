@@ -46,8 +46,10 @@ public class QuizGUI extends JFrame implements ActionListener
 	quizState = new QuizState(mapGUI.trivia.getQuizBag());
   }
   
-  public void run()
+@SuppressWarnings("deprecation")
+public void run(MapGUI mapGUI)
   {
+	mapGUI.enable(false);
 	setProperties();
 	setContent();
   }
@@ -73,6 +75,7 @@ public class QuizGUI extends JFrame implements ActionListener
 			Constants.QUIZ_HEIGHT);
 	setTitle(Constants.TITLE);	
 	setLocationRelativeTo(null);
+	setResizable(false);
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
   

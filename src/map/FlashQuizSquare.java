@@ -68,7 +68,7 @@ class FlashQuizSquare extends TimerTask
 	  cancel();
 	  
 	  quizGUI = new QuizGUI(mapGUI);
-	  quizGUI.run();
+	  quizGUI.run(mapGUI);
 	  
 	  try 
 	  {

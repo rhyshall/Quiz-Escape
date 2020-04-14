@@ -25,7 +25,9 @@ public class PaintMetronome extends TimerTask
 	if (stop == true)
 	{
 	  cancel();
-	  stop = false;
+	  stop = false;	  
+	  MapGUI.hasStarted = true;
+	  MapGUI.doHoleSpawn = false;
 	}
 	
 	else

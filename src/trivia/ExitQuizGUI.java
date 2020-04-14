@@ -37,6 +37,11 @@ public class ExitQuizGUI extends TimerTask
     
     quizGUI.dispose();
     mapGUI.repaint();
+    
+    mapGUI.enable(true);
+    mapGUI.toFront();
+    
+    mapGUI.quizMode = false;
    
     if (MapState.hasLost() == true)
     {

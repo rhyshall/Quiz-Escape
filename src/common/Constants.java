@@ -51,8 +51,8 @@ public class Constants
   public static final int SUGG_MAX_QUEST = 2000; /* estimated value for number of questions in trivia file */
   
   //black hole constants
-  public static final int MIN_BLACK_HOLE_CNT = 30; /* minimum start count of black hole obstacles */
-  public static final int MAX_BLACK_HOLE_CNT = 34; /* maximum start count of black hole obstacles */
+  public static final int MIN_BLACK_HOLE_CNT = 26; /* minimum start count of black hole obstacles */
+  public static final int MAX_BLACK_HOLE_CNT = 32; /* maximum start count of black hole obstacles */
   
   //direction constants
   public static final int UP = 0; /* represents "up" direction */

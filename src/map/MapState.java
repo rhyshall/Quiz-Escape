@@ -10,11 +10,130 @@ public class MapState
   public static int playerXPos;
   public static int playerYPos;
   public static QuizSquare activeQuizSquare;
+  public static String prevMoves[];
+  public static int prevMoveCnt;
 	
   public static void construct()
   {
     initMapConfig();
     activeQuizSquare = new QuizSquare();
+  }
+/*
+  public static boolean hasLostGame()
+  {
+	System.gc();
+	
+	initPrevMoves();
+	prevMoveCnt = 0;
+	
+	return hasLost(playerXPos,
+			       playerYPos);
+  }
+  
+  public static boolean hasLost(int xPos,
+		                        int yPos)
+  { 
+	if (mapConfig[xPos][yPos] == Constants.FINISH_SQUARE)
+	{		
+	  return false;
+	}  
+	  
+	if (isPrevMove(xPos,
+			       yPos) == false)
+	{
+	  prevMoves[prevMoveCnt] = xPos + " " + yPos;  
+	  prevMoveCnt++; 
+	}
+	
+	if (isPrevMove(xPos,
+		           yPos-1) == false)
+	{
+	  if (canMoveUp(xPos,
+			        yPos) == true)
+	  {		  
+	    return hasLost(xPos,
+			           yPos-1);
+	  }
+	}
+	
+	if (isPrevMove(xPos+1,
+			       yPos) == false)
+	{
+	  if (canMoveRight(xPos,
+		               yPos) == true)
+      {		  
+        return hasLost(xPos+1,
+		               yPos);
+      }
+	}
+	
+	if (isPrevMove(xPos,
+		           yPos+1) == false)
+	{
+	  if (canMoveDown(xPos,
+		              yPos) == true)
+      {
+        return hasLost(xPos,
+		               yPos+1);
+      }
+    }
+	
+	if (isPrevMove(xPos-1,
+		           yPos) == false)
+	{
+	  if (canMoveLeft(xPos,
+                      yPos) == true)
+      {
+        return hasLost(xPos-1,
+                       yPos);
+      }
+	}
+    
+	return true;
+  }
+*/  
+  private static void initPrevMoves()
+  {
+	int prevMoveSize;
+	int i = 0;
+	  
+	if (prevMoves == null)
+	{
+	  prevMoves = new String[1000];
+	}
+	
+	else
+	{
+	  prevMoveSize = prevMoves.length;
+		
+	  for (i = 0; i < prevMoveSize; i++)
+	  {
+		prevMoves[i] = null;
+	  }
+	}
+  }
+  
+  private static boolean isPrevMove(int xPos,
+		                            int yPos)
+  {
+	String coordStr = "";
+	int i = 0;
+	boolean isPrevMove = false;
+	
+	coordStr = xPos + " " + yPos;
+	
+	for (i = 0; i < prevMoveCnt; i++)
+	{
+	  if (prevMoves[i].equals(coordStr))
+	  {
+		isPrevMove = true;
+		break;
+	  }
+	}
+	
+	coordStr = "";
+	
+	return isPrevMove;
   }
 
   public static boolean hasLost()
@@ -26,6 +145,7 @@ public class MapState
 	boolean hasLost = true;
 	int blockSquare;
 	int quizSquare;
+	
 	
 	xCount = Constants.HOR_SQUARE_CNT;
 	yCount = Constants.VERT_SQUARE_CNT;
@@ -62,7 +182,7 @@ public class MapState
 	      }
 		}
 	  }
-	}
+	} 
 	
 	return hasLost;
   }
@@ -80,6 +200,27 @@ public class MapState
 	{
 	  if ((mapConfig[playerXPos][playerYPos+1] != Constants.GROUND_SQUARE)
 	    && (mapConfig[playerXPos][playerYPos+1] != Constants.FINISH_SQUARE))
+	  {
+		canMove = false; 
+	  }
+	}
+	
+	return canMove;
+  }
+  
+  public static boolean canMoveDown(int xPos,
+		                            int yPos)
+  {
+	boolean canMove = true;
+	
+	if (yPos >= (Constants.VERT_SQUARE_CNT-1))
+	{
+	  canMove = false;
+	}
+	 
+	else 
+	{
+	  if (mapConfig[xPos][yPos+1] == Constants.BLACK_HOLE_SQUARE)
 	  {
 		canMove = false; 
 	  }
@@ -109,6 +250,27 @@ public class MapState
 	return canMove;
   }
   
+  public static boolean canMoveRight(int xPos,
+		                             int yPos)
+  {
+	boolean canMove = true;
+	
+	if (xPos >= (Constants.HOR_SQUARE_CNT-1))
+	{
+	  canMove = false;
+	}
+	
+	else 
+	{
+	  if (mapConfig[xPos+1][yPos] == Constants.BLACK_HOLE_SQUARE)
+	  {
+		canMove = false;
+	  }
+	}
+	
+	return canMove;
+  }
+  
   public static boolean canMoveUp()
   {
 	boolean canMove = true;
@@ -122,6 +284,27 @@ public class MapState
 	{
 	  if ((mapConfig[playerXPos][playerYPos-1] != Constants.GROUND_SQUARE)
 		&& (mapConfig[playerXPos][playerYPos-1] != Constants.FINISH_SQUARE))
+	  {
+	    canMove = false;
+	  }
+	} 
+	
+	return canMove;
+  }
+  
+  public static boolean canMoveUp(int xPos,
+		                          int yPos)
+  {
+	boolean canMove = true;
+
+	if (yPos <= 0)
+	{
+      canMove = false;
+	}
+		
+	else 
+	{
+	  if (mapConfig[xPos][yPos-1] == Constants.BLACK_HOLE_SQUARE)
 	  {
 	    canMove = false;
 	  }
@@ -143,6 +326,27 @@ public class MapState
 	{
 	  if ((mapConfig[playerXPos-1][playerYPos] != Constants.GROUND_SQUARE)
 		&& (mapConfig[playerXPos-1][playerYPos] != Constants.FINISH_SQUARE))
+	  {
+		canMove = false;
+	  }
+	}
+	
+	return canMove;
+  }
+  
+  public static boolean canMoveLeft(int xPos,
+		                            int yPos)
+  {
+	boolean canMove = true;
+	
+	if (xPos <= 0)
+	{
+	  canMove = false;
+	}
+	
+	else 
+	{
+	  if (mapConfig[xPos-1][yPos] == Constants.BLACK_HOLE_SQUARE)
 	  {
 		canMove = false;
 	  }

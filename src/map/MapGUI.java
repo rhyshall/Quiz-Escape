@@ -43,12 +43,14 @@ public class MapGUI extends JFrame implements KeyListener
   public int blockHeight;
   public static boolean victory;
   public static boolean winScreen;
-  public boolean hasStarted = false;
-  public boolean spawnHoles = false;
+  public static boolean hasStarted = false;
+  public static boolean doHoleSpawn = false;
   public static JPanel promptPanel;
   public static JButton promptStart;
   public static int blackHoles[];
   public static int blackHoleIndex = 0;
+  public static boolean spaceEntered = false;
+  public static boolean quizMode = false;
 	
   public MapGUI()
   {
@@ -156,31 +158,45 @@ public class MapGUI extends JFrame implements KeyListener
 	    { 
 	      if (hasStarted == true)
 	      {
-		    if (MapState.isBesideQuestion(MapState.playerXPos,
-				                          MapState.playerYPos) == true)
-		    {
-	          QuizSquares quizSquares = new QuizSquares();
-	          FlashQuizSquare.quizSquares = quizSquares;
+	    	if (quizMode == false)
+	    	{	    	  
+	    	  quizMode = true;
+	    		
+		      if (MapState.isBesideQuestion(MapState.playerXPos,
+				                            MapState.playerYPos) == true)
+		      {
+	            QuizSquares quizSquares = new QuizSquares();
+	            FlashQuizSquare.quizSquares = quizSquares;
 	      
-		      GenQuizSquare targetSquare = new GenQuizSquare(quizSquares);
-		      FlashQuizSquare.targetSquare = targetSquare;
+		        GenQuizSquare targetSquare = new GenQuizSquare(quizSquares);
+		        FlashQuizSquare.targetSquare = targetSquare;
 		  
-		      MapState.setActiveQuiz(targetSquare);
+		        MapState.setActiveQuiz(targetSquare);
 		  
-		      flashSquares();
-		    }
-		    
-		    repaint();		
+		        flashSquares();
+		        
+		        repaint();
+		      }
+	    	}
+		    		
 		    break;
 	      }
 	    }
 	    
 	    case KeyEvent.VK_SPACE:
 	    {  
-	      if (spawnHoles == false)
+	      if (e.getKeyCode() != KeyEvent.VK_ENTER)
 	      {
-	        spawnHoles = true;	      
-	        spawnHoles();
+	    	if (spaceEntered == false)
+	    	{
+	    	  spaceEntered = true;
+	    	  
+	          if (hasStarted == false)
+	          {    
+	    	    doHoleSpawn = true;
+	            spawnHoles();
+	          }
+	    	}
 	      }
 	    }
 	  }
@@ -218,8 +234,8 @@ public class MapGUI extends JFrame implements KeyListener
 		victory = false;
 	   	winScreen = true;
 	  }
-		
-	  if (spawnHoles == true)
+
+	  if (doHoleSpawn == true)
 	  { 
 		if (blackHoleIndex == 0)
 		{
@@ -235,6 +251,11 @@ public class MapGUI extends JFrame implements KeyListener
 		}
 		
 		paintHole(g);
+		
+        if (MapState.hasLost() == true)
+  	    {
+          Reload.restartMapGUI(this);
+  	    }
 	  }
 	}
   }
@@ -290,8 +311,6 @@ public class MapGUI extends JFrame implements KeyListener
 		                       horSquareCnt);
 	  
 	  blackHoleIndex = 0;
-	  spawnHoles = false;
-	  hasStarted = true;
 	  
 	  repaint();
 	  
@@ -312,37 +331,29 @@ public class MapGUI extends JFrame implements KeyListener
 	{
       i = blackHoles[blackHoleIndex] % horSquareCnt;
       j = blackHoles[blackHoleIndex] / horSquareCnt;
-    
+      
 	  xPos = calcNextXPos(i);
 	  yPos = calcNextYPos(j);
 		
 	  MapState.mapConfig[i][j] = Constants.BLACK_HOLE_SQUARE; 
-	  
-	  if (MapState.hasLost() == true)
-	  {
-		MapState.mapConfig[i][j] = Constants.BLOCK_SQUARE;
-	  }
-	  
-	  else
-	  {
-	    colour = getColourType(i,
-                               j);
-        g.setColor(colour);
 
-        g.fillRect(xPos, 
-                   yPos, 
-                   blockWidth, 
-                   blockHeight);
+	  colour = getColourType(i,
+                             j);
+      g.setColor(colour);
 
-        g.setColor(Color.black);
+      g.fillRect(xPos, 
+                 yPos, 
+                 blockWidth, 
+                 blockHeight);
 
-        g.drawRect(xPos, 
-                   yPos, 
-                   blockWidth, 
-                   blockHeight);
+      g.setColor(Color.black);
+
+      g.drawRect(xPos, 
+                 yPos, 
+                 blockWidth, 
+                 blockHeight);
       
-        blackHoleIndex++; 
-	  }
+      blackHoleIndex++; 
 	} 
   }
   
@@ -415,6 +426,7 @@ public class MapGUI extends JFrame implements KeyListener
 	setTitle(Constants.TITLE);
 	addKeyListener(this);
 	setLocationRelativeTo(null);
+	setResizable(false);
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
   

@@ -1,9 +1,7 @@
 package generator;
 
 
-import java.util.Arrays;
 import java.util.Random;
-
 import common.Constants;
 
 public class GenBlackHoles 

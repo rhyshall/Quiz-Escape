@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import map.MapGUI;
+import map.Reload;
 
 public class EncoreGUI extends JFrame implements ActionListener
 {
@@ -55,10 +56,7 @@ public class EncoreGUI extends JFrame implements ActionListener
 	
 	if (buttonChose.getText().equals("Play Again"))
 	{
-	  mapGUI.dispose();
-	  
-	  MapGUI newMapGUI = new MapGUI();
-	  newMapGUI.run();
+	  Reload.restartMapGUI(mapGUI);
 	  
 	  dispose();
 	}
